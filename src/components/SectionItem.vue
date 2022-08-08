@@ -3,8 +3,6 @@ import { defineProps, ref } from "vue";
 
 const toggle = ref(false);
 const props = defineProps(["item"]);
-
-// console.log(props.item.description);
 </script>
 
 <template>
@@ -15,7 +13,7 @@ const props = defineProps(["item"]);
       </v-col>
       <v-col cols="10">
         <p class="text-subtitle-1 pt-1">
-          {{ props.item.description }}
+          {{ props.item.title }}
         </p>
       </v-col>
     </v-row>

@@ -1,15 +1,34 @@
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
 import { useStore } from "@/store/index";
 import SectionItem from "./SectionItem.vue";
 
 const store = useStore();
 const props = defineProps(["section"]);
+const showAddItem = ref(false);
+const task = ref({
+  title: "",
+  description: "",
+});
+const onCancelClick = () => {
+  showAddItem.value = false;
+  task.value = {
+    title: "",
+    description: "",
+  };
+};
 
-console.log(props.section.items);
+const onConfirmAddItem = () => {
+  showAddItem.value = false;
+  addSectionItem();
+  task.value = {
+    title: "",
+    description: "",
+  };
+};
 
 const addSectionItem = () => {
-  store.addItemToSection(props.section.id);
+  store.addItemToSection(props.section.id, task.value);
 };
 </script>
 <template>
@@ -24,33 +43,44 @@ const addSectionItem = () => {
       </v-row>
     </v-card-title>
     <v-card-text>
-      <!-- <v-sheet
-        rounded
-        style="border: 1px solid black"
-        v-for="item in props.section.items"
-        :key="item.description"
-      >
-        <v-row>
-          <v-col cols="2">
-            <v-radio @click="toggle = !toggle" v-model="toggle"> </v-radio>
-          </v-col>
-          <v-col cols="10">
-            <p class="text-subtitle-1 pt-1">
-              {{ item.description }}
-            </p>
-          </v-col>
-        </v-row>
-      </v-sheet> -->
       <SectionItem
         v-for="item in props.section.items"
         :key="item.description"
         :item="item"
-      >
-      </SectionItem>
+        class="mb-2"
+      />
+      <v-sheet v-if="showAddItem" rounded style="border: 1px solid black">
+        <v-text-field
+          v-model="task.title"
+          class="pl-3"
+          variant="plain"
+          placeholder="Título da tarefa"
+          hide-details
+          density="compact"
+        ></v-text-field>
+        <v-text-field
+          v-model="task.description"
+          class="pl-3"
+          variant="plain"
+          placeholder="descrição"
+          hide-details
+          density="compact"
+        ></v-text-field>
+      </v-sheet>
     </v-card-text>
     <v-card-actions>
-      <v-row justify="end">
-        <v-btn @click="addSectionItem"> adicionar tarefa </v-btn>
+      <v-row v-if="showAddItem" justify="end">
+        <v-btn @click="onCancelClick"> cancelar </v-btn>
+        <v-btn @click="onConfirmAddItem"> confirmar </v-btn>
+      </v-row>
+      <v-row v-else justify="start">
+        <v-btn
+          prepend-icon="mdi-plus-circle-outline"
+          @click="showAddItem = true"
+          size="small"
+        >
+          adicionar tarefa
+        </v-btn>
       </v-row>
     </v-card-actions>
   </v-card>

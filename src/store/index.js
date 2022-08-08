@@ -12,7 +12,8 @@ export const useStore = defineStore("items", () => {
           items: [
             {
               done: false,
-              description: "Alooou!",
+              title: "Alou",
+              description: "descricao!",
             },
           ],
         },
@@ -22,20 +23,25 @@ export const useStore = defineStore("items", () => {
           items: [
             {
               done: false,
-              description: "hey!",
+              title: "hey!",
+              description: "deeeeescricao!",
             },
           ],
         },
       ],
     },
   ]);
-  function addItemToSection(sectionId) {
+  function addItemToSection(sectionId, task) {
     // eslint-disable-next-line no-debugger
     debugger;
     console.log(boards);
     boards.value[0].sections.forEach((section) => {
       if (section.id === sectionId) {
-        section.items.push({ done: false, description: "hmmmmmm" });
+        section.items.push({
+          done: false,
+          title: task.title,
+          description: task.description,
+        });
       }
     });
   }
