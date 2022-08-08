@@ -7,6 +7,7 @@ export const useStore = defineStore("items", () => {
       name: "Quadro Teste",
       sections: [
         {
+          id: 1,
           name: "To Do",
           items: [
             {
@@ -16,6 +17,7 @@ export const useStore = defineStore("items", () => {
           ],
         },
         {
+          id: 2,
           name: "Doing",
           items: [
             {
@@ -27,5 +29,15 @@ export const useStore = defineStore("items", () => {
       ],
     },
   ]);
-  return { boards };
+  function addItemToSection(sectionId) {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    console.log(boards);
+    boards.value[0].sections.forEach((section) => {
+      if (section.id === sectionId) {
+        section.items.push({ done: false, description: "hmmmmmm" });
+      }
+    });
+  }
+  return { boards, addItemToSection };
 });
