@@ -50,7 +50,24 @@ export const useStore = defineStore("items", () => {
         });
       }
     });
-    console.log(boards.value[0].sections[0].value);
   }
-  return { boards, addItemToSection, deleteTaskItem };
+  function editTaskItem(sectionId, taskTitle, editedTask) {
+    boards.value[0].sections.forEach((section, index) => {
+      if (section.id === sectionId) {
+        boards.value[0].sections[index].items.value = section.items.map(
+          (item) => {
+            return item.title !== taskTitle
+              ? item
+              : {
+                  done: false,
+                  title: editedTask.title,
+                  description: editedTask.description,
+                };
+          }
+        );
+      }
+    });
+    console.log(boards.value[0].sections[0].items);
+  }
+  return { boards, addItemToSection, deleteTaskItem, editTaskItem };
 });

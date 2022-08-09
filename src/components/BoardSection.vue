@@ -71,7 +71,7 @@ const addSectionItem = () => {
     </v-card-text>
     <v-card-actions>
       <v-row v-if="showAddItem" justify="end">
-        <v-btn @click="onCancelClick"> cancelar </v-btn>
+        <v-btn @click="onCancelClick"> alo </v-btn>
         <v-btn @click="onConfirmAddItem"> confirmar </v-btn>
       </v-row>
       <v-row v-else justify="start">
