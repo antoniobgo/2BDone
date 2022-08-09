@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, ref } from "vue";
-import { useStore } from "@/store/index";
 import SectionItem from "./SectionItem.vue";
+import { useStore } from "@/store/index";
 
 const store = useStore();
 const props = defineProps(["section"]);
@@ -39,7 +39,7 @@ const addSectionItem = () => {
           <p>{{ section.name }}</p>
           <p class="ml-3">{{ props.section.items.length }}</p>
         </div>
-        <v-btn flat icon="mdi-dots-vertical"></v-btn>
+        <v-btn flat icon="mdi-dots-horizontal"></v-btn>
       </v-row>
     </v-card-title>
     <v-card-text>
@@ -47,6 +47,7 @@ const addSectionItem = () => {
         v-for="item in props.section.items"
         :key="item.description"
         :item="item"
+        :sectionId="props.section.id"
         class="mb-2"
       />
       <v-sheet v-if="showAddItem" rounded style="border: 1px solid black">

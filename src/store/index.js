@@ -32,9 +32,6 @@ export const useStore = defineStore("items", () => {
     },
   ]);
   function addItemToSection(sectionId, task) {
-    // eslint-disable-next-line no-debugger
-    debugger;
-    console.log(boards);
     boards.value[0].sections.forEach((section) => {
       if (section.id === sectionId) {
         section.items.push({
@@ -45,5 +42,15 @@ export const useStore = defineStore("items", () => {
       }
     });
   }
-  return { boards, addItemToSection };
+  function deleteTaskItem(sectionId, taskTitle) {
+    boards.value[0].sections.forEach((section, index) => {
+      if (section.id === sectionId) {
+        boards.value[0].sections[index].items = section.items.filter((item) => {
+          return item.title != taskTitle;
+        });
+      }
+    });
+    console.log(boards.value[0].sections[0].value);
+  }
+  return { boards, addItemToSection, deleteTaskItem };
 });
