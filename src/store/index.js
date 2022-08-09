@@ -67,7 +67,6 @@ export const useStore = defineStore("items", () => {
         );
       }
     });
-    console.log(boards.value[0].sections[0].items);
   }
   return { boards, addItemToSection, deleteTaskItem, editTaskItem };
 });
