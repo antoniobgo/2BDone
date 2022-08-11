@@ -96,7 +96,8 @@ const drawer = ref(true);
               :key="board.id"
               :title="board.name"
               rounded="xl"
-              value="board.id"
+              :value="board.id"
+              @click="store.chosenBoardId = board.id"
             >
             </v-list-item>
           </v-list-group>

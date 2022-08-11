@@ -4,18 +4,34 @@ import { useStore } from "@/store/index";
 import BoardSection from "@/components/BoardSection.vue";
 
 const store = useStore();
-
-// const toggle = ref(false);
 </script>
 <template>
   <div class="pa-10">
     <v-row justify="space-between" dense>
-      <p class="text-h4">{{ store.boards[0].name }}</p>
-      <v-btn flat icon="mdi-dots-vertical"></v-btn>
+      <p class="text-h4">{{ store.boards[store.chosenBoardId - 1].name }}</p>
+      <v-menu location="start">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            class="pr-2"
+            v-bind="props"
+            flat
+            icon="mdi-dots-horizontal"
+          ></v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item @click="onEditTaskClick">
+            <v-list-item-title>editar nome</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="onDeleteTaskClick">
+            <v-list-item-title>excluir projeto</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-row>
     <v-row dense class="mt-15">
       <BoardSection
-        v-for="section in store.boards[0].sections"
+        v-for="section in store.boards[store.chosenBoardId - 1].sections"
         :key="section.name"
         :section="section"
       />
