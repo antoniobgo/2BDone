@@ -2,8 +2,10 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useStore = defineStore("items", () => {
+  const chosenBoardId = ref(1);
   const boards = ref([
     {
+      id: 1,
       name: "Quadro Teste",
       sections: [
         {
@@ -42,6 +44,11 @@ export const useStore = defineStore("items", () => {
       }
     });
   }
+  function addBoard(board) {
+    board.value.id = boards.value.length + 1;
+    boards.value.push(board.value);
+    console.log(boards.value);
+  }
   function deleteTaskItem(sectionId, taskTitle) {
     boards.value[0].sections.forEach((section, index) => {
       if (section.id === sectionId) {
@@ -68,5 +75,12 @@ export const useStore = defineStore("items", () => {
       }
     });
   }
-  return { boards, addItemToSection, deleteTaskItem, editTaskItem };
+  return {
+    boards,
+    chosenBoardId,
+    addItemToSection,
+    addBoard,
+    deleteTaskItem,
+    editTaskItem,
+  };
 });
