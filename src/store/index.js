@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useStore = defineStore("items", () => {
+  const isUserLoggedIn = ref(false);
+  const loggedUser = ref({});
   const chosenBoardId = ref(1);
   const boards = ref([
     {
@@ -76,6 +78,8 @@ export const useStore = defineStore("items", () => {
     });
   }
   return {
+    isUserLoggedIn,
+    loggedUser,
     boards,
     chosenBoardId,
     addItemToSection,

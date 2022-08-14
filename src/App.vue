@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useStore } from "./store";
+import router from "@/router/index.js";
 
 const store = useStore();
 const showAddBoard = ref(false);
@@ -36,8 +37,22 @@ const drawer = ref(true);
         </v-row>
       </template>
       <v-app-bar-title>2BDone</v-app-bar-title>
+      <v-spacer />
+      <v-btn
+        v-if="store.isUserLoggedIn"
+        class="mr-4"
+        icon="mdi-account-circle"
+      />
+      <v-btn
+        @click="router.push('login')"
+        variant="outlined"
+        v-else
+        class="mr-4"
+      >
+        Entrar
+      </v-btn>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" left>
+    <v-navigation-drawer v-if="store.isUserLoggedIn" v-model="drawer" left>
       <v-card flat class="pl-5 pt-5">
         <v-list>
           <v-list-item
