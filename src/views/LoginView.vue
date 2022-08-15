@@ -2,10 +2,12 @@
 import { ref, computed, inject } from "vue";
 import { useStore } from "@/store/index";
 import router from "@/router/index.js";
+import { useCookies } from "vue3-cookies";
 
 const axios = inject("axios");
 const store = useStore();
 const user = ref({});
+const { cookies } = useCookies();
 const titleMessage = computed(() => {
   return "Bem vindo de volta!";
 });
@@ -17,10 +19,25 @@ const onConfirmClick = () => {
     .post("http://localhost:3000/v1/auth/login", user.value)
     .then((response) => {
       if (response.status === 200) {
-        //eslint-disable-next-line
-        // debugger;
         store.loggedUser.value = response.data.user;
+        console.log(response.data.tokens);
+        cookies.set("access", response.data.tokens.access);
+        cookies.set("refresh", response.data.tokens.refresh);
+        console.log(cookies.get("access"));
         store.isUserLoggedIn = true;
+        axios
+          .get(
+            "http://localhost:3000/v1/users/" +
+              store.loggedUser.value.id +
+              "/boards"
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              response.data.forEach((item) => {
+                store.addBoard(item);
+              });
+            }
+          });
         router.push("/");
       }
     });

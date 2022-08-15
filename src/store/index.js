@@ -5,36 +5,7 @@ export const useStore = defineStore("items", () => {
   const isUserLoggedIn = ref(false);
   const loggedUser = ref({});
   const chosenBoardId = ref(1);
-  const boards = ref([
-    {
-      id: 1,
-      name: "Quadro Teste",
-      sections: [
-        {
-          id: 1,
-          name: "To Do",
-          items: [
-            {
-              done: false,
-              title: "Alou",
-              description: "descricao!",
-            },
-          ],
-        },
-        {
-          id: 2,
-          name: "Doing",
-          items: [
-            {
-              done: false,
-              title: "hey!",
-              description: "deeeeescricao!",
-            },
-          ],
-        },
-      ],
-    },
-  ]);
+  const boards = ref([]);
   function addItemToSection(sectionId, task) {
     boards.value[0].sections.forEach((section) => {
       if (section.id === sectionId) {
@@ -47,9 +18,7 @@ export const useStore = defineStore("items", () => {
     });
   }
   function addBoard(board) {
-    board.value.id = boards.value.length + 1;
-    boards.value.push(board.value);
-    console.log(boards.value);
+    boards.value.push(board);
   }
   function deleteTaskItem(sectionId, taskTitle) {
     boards.value[0].sections.forEach((section, index) => {

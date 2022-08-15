@@ -1,8 +1,9 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, inject, onMounted } from "vue";
 import { useStore } from "./store";
 import router from "@/router/index.js";
 
+const axios = inject("axios");
 const store = useStore();
 const showAddBoard = ref(false);
 const boards = ref(store.boards);
@@ -13,8 +14,19 @@ const justifyValue = computed(() => {
 });
 
 const onConfirmAddBoardClick = () => {
+  //eslint-disable-next-line
+  // debugger;
+  axios
+    .post(
+      "http://localhost:3000/v1/users/" + store.loggedUser.value.id + "/boards",
+      newBoard.value
+    )
+    .then((response) => {
+      if (response.status === 201) {
+        newBoard.value = {};
+      }
+    });
   store.addBoard(newBoard);
-  newBoard.value = {};
   showAddBoard.value = false;
 };
 
