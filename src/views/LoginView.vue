@@ -2,12 +2,11 @@
 import { ref, computed, inject } from "vue";
 import { useStore } from "@/store/index";
 import router from "@/router/index.js";
-import { useCookies } from "vue3-cookies";
+import AuthService from "../services/auth.service";
 
 const axios = inject("axios");
 const store = useStore();
 const user = ref({});
-const { cookies } = useCookies();
 const titleMessage = computed(() => {
   return "Bem vindo de volta!";
 });
@@ -15,32 +14,15 @@ const onCancelClick = () => {
   user.value = {};
 };
 const onConfirmClick = () => {
-  axios
-    .post("http://localhost:3000/v1/auth/login", user.value)
-    .then((response) => {
-      if (response.status === 200) {
-        store.loggedUser.value = response.data.user;
-        console.log(response.data.tokens);
-        cookies.set("access", response.data.tokens.access);
-        cookies.set("refresh", response.data.tokens.refresh);
-        console.log(cookies.get("access"));
-        store.isUserLoggedIn = true;
-        axios
-          .get(
-            "http://localhost:3000/v1/users/" +
-              store.loggedUser.value.id +
-              "/boards"
-          )
-          .then((response) => {
-            if (response.status === 200) {
-              response.data.forEach((item) => {
-                store.addBoard(item);
-              });
-            }
-          });
-        router.push("/");
-      }
-    });
+  AuthService.login(user.value).then((response) => {
+    if (response.code === 401) console.log("nao logou");
+    //eslint-disable-next-line
+    // debugger;
+    else {
+      store.$patch({ isUserLoggedIn: true, loggedUser: response.data.user });
+      router.push({ name: "home" });
+    }
+  });
 };
 </script>
 <template>

@@ -2,6 +2,7 @@
 import { ref, computed, inject, onMounted } from "vue";
 import { useStore } from "./store";
 import router from "@/router/index.js";
+import AuthService from "./services/auth.service";
 
 const axios = inject("axios");
 const store = useStore();
@@ -36,6 +37,12 @@ const onCancelClick = () => {
 };
 
 const drawer = ref(true);
+
+const onLogoutClick = () => {
+  AuthService.logout();
+  store.$patch({ isUserLoggedIn: false, loggedUser: {} });
+  router.push({ name: "login" });
+};
 </script>
 <template>
   <v-app>
@@ -45,20 +52,20 @@ const drawer = ref(true);
           <v-app-bar-nav-icon
             @click.stop="drawer = !drawer"
           ></v-app-bar-nav-icon>
-          <v-btn icon="mdi-home" />
+          <v-btn @click="router.push({ name: 'home' })" icon="mdi-home" />
         </v-row>
       </template>
       <v-app-bar-title>2BDone</v-app-bar-title>
       <v-spacer />
+      <div class="d-flex align-center" v-if="store.isUserLoggedIn">
+        <v-btn class="mr-2" icon="mdi-account-circle" />
+        <p class="mr-10">{{ store.loggedUser.name }}</p>
+        <v-btn @click="onLogoutClick" variant="outlined">logout</v-btn>
+      </div>
       <v-btn
-        v-if="store.isUserLoggedIn"
-        class="mr-4"
-        icon="mdi-account-circle"
-      />
-      <v-btn
+        v-else
         @click="router.push('login')"
         variant="outlined"
-        v-else
         class="mr-4"
       >
         Entrar

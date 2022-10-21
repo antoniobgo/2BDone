@@ -3,6 +3,7 @@ import { ref, computed, inject } from "vue";
 import { useStore } from "@/store/index";
 import BoardSection from "@/components/BoardSection.vue";
 import router from "@/router/index.js";
+import AuthService from "../services/auth.service";
 
 const axios = inject("axios");
 const store = useStore();
@@ -14,9 +15,10 @@ const onCancelClick = () => {
   user.value = {};
 };
 const onConfirmClick = () => {
-  axios.post("http://localhost:3000/v1/users", user.value).then((response) => {
+  AuthService.register(user.value).then((response) => {
     if (response.status === 201) {
       user.value = {};
+      router.push("/");
     }
   });
 };

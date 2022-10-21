@@ -1,11 +1,13 @@
 <script setup>
-// import { ref } from "vue";
+import { onBeforeMount } from "vue";
 import router from "../router/index.js";
 import { useStore } from "@/store/index";
 import BoardSection from "@/components/BoardSection.vue";
 
+onBeforeMount(() => {
+  if (!store.isUserLoggedIn) router.push("login");
+});
 const store = useStore();
-if (!store.isUserLoggedIn) router.push("login");
 </script>
 <template>
   <div class="pa-10">
