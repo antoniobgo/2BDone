@@ -1,6 +1,8 @@
 import axios from "axios";
+// import { useStore } from "@/store/index";
 
 const API_URL = "http://localhost:3000/v1/auth/";
+// const store = useStore();
 
 class AuthService {
   login(user) {
@@ -11,14 +13,18 @@ class AuthService {
       })
       .then((response) => {
         if (response.data.tokens.access && response.data.tokens.refresh) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("tokens", JSON.stringify(response.data.tokens));
+          // store.$patch({
+          //   isUserLoggedIn: true,
+          //   loggedUser: response.data.user,
+          // });
         }
         return response;
       });
   }
 
   logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("tokens");
   }
 
   register(user) {
