@@ -1,13 +1,14 @@
 <script setup>
 import { ref, computed, inject, onMounted } from "vue";
 import { useStore } from "./store";
+import { storeToRefs } from "pinia";
 import router from "@/router/index.js";
 import AuthService from "./services/auth.service";
 
 const axios = inject("axios");
 const store = useStore();
 const showAddBoard = ref(false);
-const boards = ref(store.boards);
+const { boards } = storeToRefs(store);
 const newBoard = ref({});
 
 const justifyValue = computed(() => {
@@ -15,20 +16,23 @@ const justifyValue = computed(() => {
 });
 
 const onConfirmAddBoardClick = () => {
+  newBoard.value.user = store.loggedUser.id;
   //eslint-disable-next-line
   // debugger;
   axios
-    .post(
-      "http://localhost:3000/v1/users/" + store.loggedUser.value.id + "/boards",
-      newBoard.value
-    )
+    .post("http://localhost:3000/v1/boards", {
+      board: newBoard.value,
+    })
     .then((response) => {
       if (response.status === 201) {
+        store.addBoard(newBoard);
+        showAddBoard.value = false;
         newBoard.value = {};
       }
+    })
+    .catch((error) => {
+      console.log(error);
     });
-  store.addBoard(newBoard);
-  showAddBoard.value = false;
 };
 
 const onCancelClick = () => {
@@ -42,6 +46,11 @@ const onLogoutClick = () => {
   AuthService.logout();
   store.$patch({ isUserLoggedIn: false, loggedUser: {} });
   router.push({ name: "login" });
+};
+
+const onBoardClick = (board) => {
+  const index = boards.value.indexOf(board);
+  store.chosenBoardIndex = index;
 };
 </script>
 <template>
@@ -96,6 +105,7 @@ const onLogoutClick = () => {
                 v-bind="props"
                 prepend-icon="mdi-folder-outline"
                 title="Projetos"
+                value="projects"
               ></v-list-item>
             </template>
             <v-row dense no-gutters :justify="justifyValue">
@@ -130,8 +140,8 @@ const onLogoutClick = () => {
               :key="board.id"
               :title="board.name"
               rounded="xl"
-              :value="board.id"
-              @click="store.chosenBoardId = board.id"
+              :value="board.name"
+              @click="onBoardClick(board)"
             >
             </v-list-item>
           </v-list-group>

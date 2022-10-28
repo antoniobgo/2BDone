@@ -24,7 +24,20 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("tokens");
+    const tokens = JSON.parse(localStorage.getItem("tokens"));
+    //eslint-disable-next-line
+    debugger;
+    if (tokens)
+      return axios
+        .post(API_URL + "logout", {
+          refreshToken: tokens.refresh.token,
+        })
+        .then((response) => {
+          localStorage.removeItem("tokens");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   }
 
   register(user) {

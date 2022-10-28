@@ -4,8 +4,12 @@ import { ref } from "vue";
 export const useStore = defineStore("items", () => {
   const isUserLoggedIn = ref(false);
   const loggedUser = ref({});
-  const chosenBoardId = ref(1);
+  const chosenBoardIndex = ref(0);
   const boards = ref([]);
+
+  function setBoards(newBoards) {
+    boards.value = newBoards;
+  }
   function addItemToSection(sectionId, task) {
     boards.value[0].sections.forEach((section) => {
       if (section.id === sectionId) {
@@ -50,10 +54,11 @@ export const useStore = defineStore("items", () => {
     isUserLoggedIn,
     loggedUser,
     boards,
-    chosenBoardId,
+    chosenBoardIndex,
     addItemToSection,
     addBoard,
     deleteTaskItem,
     editTaskItem,
+    setBoards,
   };
 });

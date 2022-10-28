@@ -3,17 +3,39 @@ import { onBeforeMount } from "vue";
 import router from "../router/index.js";
 import { useStore } from "@/store/index";
 import BoardSection from "@/components/BoardSection.vue";
+import BoardService from "@/services/board.service";
+import AuthService from "@/services/auth.service";
+
+const store = useStore();
+
+const tryLoginUserWithTokens = () => {
+  // AuthService.loginWithAccessToken
+};
 
 onBeforeMount(() => {
-  if (!store.isUserLoggedIn) router.push("login");
+  if (!store.isUserLoggedIn) {
+    // localStorage.getItem("tokens")
+    //   ? tryLoginUserWithTokens()
+    //   : router.push("login");
+    router.push("login");
+  }
+  BoardService.getBoards(store.loggedUser.id).then((response) => {
+    //eslint-disable-next-line
+    // debugger;
+    // store.setBoards(response.data);
+    store.boards = response.data;
+    //eslint-disable-next-line
+    debugger;
+  });
 });
-const store = useStore();
 </script>
 <template>
   <div class="pa-10">
     <div v-if="store.boards.length">
       <v-row justify="space-between" dense>
-        <p class="text-h4">{{ store.boards[store.chosenBoardId - 1].name }}</p>
+        <p class="text-h4">
+          {{ store.boards[store.chosenBoardIndex].name }}
+        </p>
         <v-menu location="start">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -35,11 +57,12 @@ const store = useStore();
         </v-menu>
       </v-row>
       <v-row dense class="mt-15">
-        <BoardSection
+        <!-- TODO: logica do chosenboardid nao funciona mais-->
+        <!-- <BoardSection
           v-for="section in store.boards[store.chosenBoardId - 1].sections"
           :key="section.name"
           :section="section"
-        />
+        /> -->
       </v-row>
     </div>
     <div v-else>
