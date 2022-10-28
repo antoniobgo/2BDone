@@ -23,6 +23,25 @@ class AuthService {
       });
   }
 
+  loginWithTokens(user) {
+    const tokens = JSON.parse(localStorage.getItem("tokens"));
+    return axios
+      .post(API_URL + "login-with-token", {
+        accessToken: tokens.access.token,
+        refreshToken: tokens.refresh.token,
+      })
+      .then((response) => {
+        if (response.data.tokens.access && response.data.tokens.refresh) {
+          localStorage.setItem("tokens", JSON.stringify(response.data.tokens));
+          // store.$patch({
+          //   isUserLoggedIn: true,
+          //   loggedUser: response.data.user,
+          // });
+        }
+        return response;
+      });
+  }
+
   logout() {
     const tokens = JSON.parse(localStorage.getItem("tokens"));
     //eslint-disable-next-line

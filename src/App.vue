@@ -8,14 +8,16 @@ import AuthService from "./services/auth.service";
 const axios = inject("axios");
 const store = useStore();
 const showAddBoard = ref(false);
-const { boards } = storeToRefs(store);
+const { loggedUser } = storeToRefs(store);
 const newBoard = ref({});
+const addBorderIsLoading = ref(false);
 
 const justifyValue = computed(() => {
   return showAddBoard.value ? "start" : "end";
 });
 
 const onConfirmAddBoardClick = () => {
+  addBorderIsLoading.value = true;
   newBoard.value.user = store.loggedUser.id;
   //eslint-disable-next-line
   // debugger;
@@ -24,14 +26,18 @@ const onConfirmAddBoardClick = () => {
       board: newBoard.value,
     })
     .then((response) => {
-      if (response.status === 201) {
-        store.addBoard(newBoard);
+      if (response.status === 200) {
+        //eslint-disable-next-line
+        debugger;
+        store.addBoard(newBoard.value);
         showAddBoard.value = false;
         newBoard.value = {};
+        addBorderIsLoading.value = false;
       }
     })
     .catch((error) => {
       console.log(error);
+      addBorderIsLoading.value = false;
     });
 };
 
@@ -49,7 +55,7 @@ const onLogoutClick = () => {
 };
 
 const onBoardClick = (board) => {
-  const index = boards.value.indexOf(board);
+  const index = loggedUser.value.boards.indexOf(board);
   store.chosenBoardIndex = index;
 };
 </script>
@@ -129,14 +135,19 @@ const onBoardClick = (board) => {
                   <v-btn size="x-small" flat @click="onCancelClick">
                     cancelar
                   </v-btn>
-                  <v-btn size="x-small" flat @click="onConfirmAddBoardClick">
+                  <v-btn
+                    size="x-small"
+                    flat
+                    @click="onConfirmAddBoardClick"
+                    :loading="addBorderIsLoading"
+                  >
                     confirmar
                   </v-btn>
                 </v-row>
               </v-col>
             </v-row>
             <v-list-item
-              v-for="board in boards"
+              v-for="board in loggedUser.boards"
               :key="board.id"
               :title="board.name"
               rounded="xl"
