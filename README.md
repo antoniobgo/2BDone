@@ -1,24 +1,15 @@
-# todolist-front
+# 2BDone frontend.
 
-## Project setup
-```
-npm install
-```
+## Em construção.
 
-### Compiles and hot-reloads for development
+## O que é? 
+
 ```
-npm run serve
+2BDone é uma aplicação no estilo "todo list", inspirado no Todoist (https://todoist.com).
 ```
 
-### Compiles and minifies for production
+### Tecnologias utilizadas:
 ```
-npm run build
-```
+SPA que utiliza os recursos pegos no backend(https://github.com/antoniobgo/2BDone-back), criada utilizando Vue.js 3, Vuetify 3 Beta, Vue Router.
 
-### Lints and fixes files
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
