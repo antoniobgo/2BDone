@@ -1,7 +1,7 @@
 import axios from "axios";
 // import { useStore } from "@/store/index";
 
-const API_URL = "http://localhost:3000/v1/boards";
+const API_URL = "http://localhost:3000/";
 // const store = useStore();
 
 class BoardService {
@@ -24,8 +24,15 @@ class BoardService {
   // }
 
   // TODO: enviar tokens.
-  getBoards(userId) {
-    return axios.get(API_URL, { params: { userId } });
+  getBoards() {
+    let token = JSON.parse(localStorage.getItem("token"));
+    //eslint-disable-next-line
+    // debugger;
+    return axios.get(API_URL + "me/boards", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   // register(user) {

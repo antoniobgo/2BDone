@@ -9,46 +9,52 @@ import AuthService from "@/services/auth.service";
 const store = useStore();
 
 const tryLoginUserWithTokens = () => {
-  AuthService.loginWithTokens()
-    .then((response) => {
-      if (response.status === 200)
-        store.$patch({
-          isUserLoggedIn: true,
-          loggedUser: response.data.user,
-        });
-    })
-    .catch((err) => {
-      localStorage.removeItem("tokens");
-      store.$patch({
-        isUserLoggedIn: false,
-        loggedUser: {},
-      });
-      router.push("login");
-    });
+  // AuthService.loginWithToken()
+  //   .then((response) => {
+  //     if (response.status === 200)
+  //       store.$patch({
+  //         isUserLoggedIn: true,
+  //         loggedUser: response.data.user,
+  //       });
+  //   })
+  //   .catch((err) => {
+  //     localStorage.removeItem("token");
+  //     store.$patch({
+  //       isUserLoggedIn: false,
+  //       loggedUser: {},
+  //     });
+  //     router.push("login");
+  //   });
 };
 
 onBeforeMount(() => {
   if (!store.isUserLoggedIn) {
-    localStorage.getItem("tokens")
-      ? tryLoginUserWithTokens()
-      : router.push("login");
+    // localStorage.getItem("token")
+    //   ? tryLoginUserWithTokens()
+    //   : router.push("login");
+    if (!localStorage.getItem("token")) router.push("login");
+    AuthService.loginWithToken().then((user) => {
+      if (user)
+        store.$patch({
+          isUserLoggedIn: true,
+          loggedUser: user,
+        });
+      else router.push("login");
+    });
+    BoardService.getBoards().then((response) => {
+      //eslint-disable-next-line
+      // debugger;
+      if (response.status === 200) store.setBoards(response.data);
+    });
   }
-  // BoardService.getBoards(store.loggedUser.id).then((response) => {
-  //   //eslint-disable-next-line
-  //   // debugger;
-  //   // store.setBoards(response.data);
-  //   store.boards = response.data;
-  //   //eslint-disable-next-line
-  //   debugger;
-  // });
 });
 </script>
 <template>
   <div class="pa-10">
-    <div v-if="store.isUserLoggedIn && store.loggedUser.boards.length">
+    <div v-if="store.isUserLoggedIn && store.boards.length">
       <v-row justify="space-between" dense>
         <p class="text-h4">
-          {{ store.loggedUser.boards[store.chosenBoardIndex].name }}
+          {{ store.boards[store.chosenBoardIndex].title }}
         </p>
         <v-menu location="start">
           <template v-slot:activator="{ props }">

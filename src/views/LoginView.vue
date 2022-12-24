@@ -21,7 +21,7 @@ const onConfirmClick = () => {
   isLoading.value = true;
   AuthService.login(user.value)
     .then((response) => {
-      if (response.status === 200) {
+      if (response.status === 202) {
         store.$patch({
           isUserLoggedIn: true,
           loggedUser: response.data.user,

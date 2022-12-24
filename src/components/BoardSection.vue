@@ -6,13 +6,13 @@ import { useStore } from "@/store/index";
 const store = useStore();
 const props = defineProps(["section"]);
 const showAddItem = ref(false);
-const task = ref({
+const taskItem = ref({
   title: "",
   description: "",
 });
 const onCancelClick = () => {
   showAddItem.value = false;
-  task.value = {
+  taskItem.value = {
     title: "",
     description: "",
   };
@@ -21,14 +21,14 @@ const onCancelClick = () => {
 const onConfirmAddItem = () => {
   showAddItem.value = false;
   addSectionItem();
-  task.value = {
+  taskItem.value = {
     title: "",
     description: "",
   };
 };
 
 const addSectionItem = () => {
-  store.addItemToSection(props.section.id, task.value);
+  store.addItemToSection(props.section.id, taskItem.value);
 };
 </script>
 <template>
@@ -52,7 +52,7 @@ const addSectionItem = () => {
       />
       <v-sheet v-if="showAddItem" rounded style="border: 1px solid black">
         <v-text-field
-          v-model="task.title"
+          v-model="taskItem.title"
           class="pl-3"
           variant="plain"
           placeholder="Título da tarefa"
@@ -60,7 +60,7 @@ const addSectionItem = () => {
           density="compact"
         ></v-text-field>
         <v-text-field
-          v-model="task.description"
+          v-model="taskItem.description"
           class="pl-3"
           variant="plain"
           placeholder="descrição"

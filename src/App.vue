@@ -19,12 +19,18 @@ const justifyValue = computed(() => {
 const onConfirmAddBoardClick = () => {
   addBorderIsLoading.value = true;
   newBoard.value.user = store.loggedUser.id;
-  //eslint-disable-next-line
-  // debugger;
+  const accessToken = JSON.parse(localStorage.getItem("tokens")).access.token;
   axios
-    .post("http://localhost:3000/v1/boards", {
-      board: newBoard.value,
-    })
+    .post(
+      "http://localhost:3000/v1/boards",
+      {
+        name: newBoard.value.name,
+        user: newBoard.value.user,
+      },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    )
     .then((response) => {
       if (response.status === 200) {
         //eslint-disable-next-line
@@ -147,11 +153,11 @@ const onBoardClick = (board) => {
               </v-col>
             </v-row>
             <v-list-item
-              v-for="board in loggedUser.boards"
+              v-for="board in store.boards"
               :key="board.id"
-              :title="board.name"
+              :title="board.title"
               rounded="xl"
-              :value="board.name"
+              :value="board.title"
               @click="onBoardClick(board)"
             >
             </v-list-item>

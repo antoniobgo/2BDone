@@ -1,19 +1,19 @@
 import axios from "axios";
 // import { useStore } from "@/store/index";
 
-const API_URL = "http://localhost:3000/v1/auth/";
+const API_URL = "http://localhost:3000/";
 // const store = useStore();
 
 class AuthService {
   login(user) {
     return axios
-      .post(API_URL + "login", {
+      .post(API_URL + "/auth/login", {
         email: user.email,
         password: user.password,
       })
       .then((response) => {
-        if (response.data.tokens.access && response.data.tokens.refresh) {
-          localStorage.setItem("tokens", JSON.stringify(response.data.tokens));
+        if (response.data.token) {
+          localStorage.setItem("token", JSON.stringify(response.data.token));
           // store.$patch({
           //   isUserLoggedIn: true,
           //   loggedUser: response.data.user,
@@ -23,36 +23,31 @@ class AuthService {
       });
   }
 
-  loginWithTokens(user) {
-    const tokens = JSON.parse(localStorage.getItem("tokens"));
+  loginWithToken() {
+    const token = JSON.parse(localStorage.getItem("token"));
     return axios
-      .post(API_URL + "login-with-token", {
-        accessToken: tokens.access.token,
-        refreshToken: tokens.refresh.token,
+      .get(API_URL + "me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((response) => {
-        if (response.data.tokens.access && response.data.tokens.refresh) {
-          localStorage.setItem("tokens", JSON.stringify(response.data.tokens));
-          // store.$patch({
-          //   isUserLoggedIn: true,
-          //   loggedUser: response.data.user,
-          // });
+        if (response.data.user && response.status === 200) {
+          return response.data.user;
         }
-        return response;
+        return false;
       });
   }
 
   logout() {
-    const tokens = JSON.parse(localStorage.getItem("tokens"));
-    //eslint-disable-next-line
-    debugger;
+    const tokens = JSON.parse(localStorage.getItem("token"));
     if (tokens)
       return axios
         .post(API_URL + "logout", {
           refreshToken: tokens.refresh.token,
         })
         .then((response) => {
-          localStorage.removeItem("tokens");
+          localStorage.removeItem("token");
         })
         .catch((err) => {
           console.log(err);
@@ -60,8 +55,7 @@ class AuthService {
   }
 
   register(user) {
-    return axios.post(API_URL + "register", {
-      name: user.name,
+    return axios.post(API_URL + "/users", {
       email: user.email,
       password: user.password,
     });
