@@ -88,7 +88,7 @@ const onBoardClick = (index) => {
       <v-spacer />
       <div class="d-flex align-center" v-if="store.isUserLoggedIn">
         <v-btn class="mr-2" icon="mdi-account-circle" />
-        <p class="mr-10">{{ store.loggedUser.name }}</p>
+        <p class="mr-10">{{ store.loggedUser.email }}</p>
         <v-btn @click="onLogoutClick" variant="outlined">logout</v-btn>
       </div>
       <v-btn
