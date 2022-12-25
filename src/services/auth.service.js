@@ -13,7 +13,7 @@ class AuthService {
       })
       .then((response) => {
         if (response.data.token) {
-          localStorage.setItem("token", JSON.stringify(response.data.token));
+          localStorage.setItem("token", response.data.token);
           // store.$patch({
           //   isUserLoggedIn: true,
           //   loggedUser: response.data.user,
@@ -24,7 +24,7 @@ class AuthService {
   }
 
   loginWithToken() {
-    const token = JSON.parse(localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
     return axios
       .get(API_URL + "me", {
         headers: {

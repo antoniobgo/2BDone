@@ -4,47 +4,56 @@ import { useStore } from "./store";
 import { storeToRefs } from "pinia";
 import router from "@/router/index.js";
 import AuthService from "./services/auth.service";
+import BoardService from "./services/board.service";
 
 const axios = inject("axios");
 const store = useStore();
 const showAddBoard = ref(false);
 const { loggedUser } = storeToRefs(store);
 const newBoard = ref({});
-const addBorderIsLoading = ref(false);
+const addBoardIsLoading = ref(false);
 
 const justifyValue = computed(() => {
   return showAddBoard.value ? "start" : "end";
 });
 
 const onConfirmAddBoardClick = () => {
-  addBorderIsLoading.value = true;
-  newBoard.value.user = store.loggedUser.id;
-  const accessToken = JSON.parse(localStorage.getItem("tokens")).access.token;
-  axios
-    .post(
-      "http://localhost:3000/v1/boards",
-      {
-        name: newBoard.value.name,
-        user: newBoard.value.user,
-      },
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    )
-    .then((response) => {
-      if (response.status === 200) {
-        //eslint-disable-next-line
-        debugger;
-        store.addBoard(newBoard.value);
-        showAddBoard.value = false;
-        newBoard.value = {};
-        addBorderIsLoading.value = false;
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      addBorderIsLoading.value = false;
-    });
+  addBoardIsLoading.value = true;
+  BoardService.createBoard(newBoard.value).then((response) => {
+    if (response.status === 201) {
+      store.addBoard(newBoard);
+      addBoardIsLoading.value = false;
+      newBoard.value = {};
+      store.chosenBoardIndex.value = store.boards.length - 1;
+    } else if (response.status === 422) {
+      addBoardIsLoading.value = false;
+    }
+  });
+  // axios
+  //   .post(
+  //     "http://localhost:3000/v1/boards",
+  //     {
+  //       name: newBoard.value.name,
+  //       user: newBoard.value.user,
+  //     },
+  //     {
+  //       headers: { Authorization: `Bearer ${accessToken}` },
+  //     }
+  //   )
+  //   .then((response) => {
+  //     if (response.status === 200) {
+  //       //eslint-disable-next-line
+  //       debugger;
+  //       store.addBoard(newBoard.value);
+  //       showAddBoard.value = false;
+  //       newBoard.value = {};
+  //       addBoardIsLoading.value = false;
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //     addBoardIsLoading.value = false;
+  //   });
 };
 
 const onCancelClick = () => {
@@ -60,8 +69,7 @@ const onLogoutClick = () => {
   router.push({ name: "login" });
 };
 
-const onBoardClick = (board) => {
-  const index = loggedUser.value.boards.indexOf(board);
+const onBoardClick = (index) => {
   store.chosenBoardIndex = index;
 };
 </script>
@@ -130,7 +138,7 @@ const onBoardClick = (board) => {
               />
               <v-col v-else cols="11" class="mb-7">
                 <v-text-field
-                  v-model="newBoard.name"
+                  v-model="newBoard.title"
                   class="pl-3"
                   variant="outlined"
                   placeholder="Nome do projeto"
@@ -145,7 +153,7 @@ const onBoardClick = (board) => {
                     size="x-small"
                     flat
                     @click="onConfirmAddBoardClick"
-                    :loading="addBorderIsLoading"
+                    :loading="addBoardIsLoading"
                   >
                     confirmar
                   </v-btn>
@@ -153,12 +161,12 @@ const onBoardClick = (board) => {
               </v-col>
             </v-row>
             <v-list-item
-              v-for="board in store.boards"
+              v-for="(board, index) in store.boards"
               :key="board.id"
               :title="board.title"
               rounded="xl"
               :value="board.title"
-              @click="onBoardClick(board)"
+              @click="onBoardClick(index)"
             >
             </v-list-item>
           </v-list-group>

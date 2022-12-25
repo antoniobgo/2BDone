@@ -22,7 +22,7 @@ export const useStore = defineStore("items", () => {
     });
   }
   function addBoard(board) {
-    loggedUser.value.boards.push(board);
+    boards.value.push(board);
   }
   function deleteTaskItem(sectionId, taskTitle) {
     boards.value[0].sections.forEach((section, index) => {
