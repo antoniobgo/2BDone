@@ -16,31 +16,30 @@ const errorMessage = computed(() => {
 });
 const isLoading = ref(false);
 const showErrorMessage = ref(false);
-const pattern =
+const emailPattern =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 function isButtonDisabled() {
   if (
     !user.value.name ||
     !user.value.email ||
     !user.value.password ||
-    !user.value.confirmPassword
+    !user.value.passwordConfirmation
   )
     return true;
   //eslint-disable-next-line
-  debugger;
   return !(
-    pattern.test(user.value.email) &&
-    user.value.password === user.value.confirmPassword
+    emailPattern.test(user.value.email) &&
+    user.value.password === user.value.passwordConfirmation
   );
 }
 const rules = {
   required: (value) => !!value || "Campo obrigatório.",
   counter: (value) =>
-    value.length >= 8 || "Senha deve ter no mínimo 8 caracteres.",
+    value.length >= 6 || "Senha deve ter no mínimo 6 caracteres.",
   email: (value) => {
-    return pattern.test(value) || "E-mail inválido.";
+    return emailPattern.test(value) || "E-mail inválido.";
   },
-  confirmPassword: (value) =>
+  passwordConfirmation: (value) =>
     value === user.value.password || "As senhas devem coincidir.",
 };
 
@@ -96,10 +95,14 @@ const onConfirmClick = () => {
               type="password"
             />
             <v-text-field
-              v-model="user.confirmPassword"
+              v-model="user.passwordConfirmation"
               placeholder="Confirmar Senha"
               variant="outlined"
-              :rules="[rules.required, rules.counter, rules.confirmPassword]"
+              :rules="[
+                rules.required,
+                rules.counter,
+                rules.passwordConfirmation,
+              ]"
               density="compact"
               class="my-2"
               type="password"

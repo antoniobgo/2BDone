@@ -8,10 +8,19 @@ const axios = inject("axios");
 const store = useStore();
 const user = ref({});
 const isLoading = ref(false);
+const emailPattern =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const rules = {
+  counter: (value) =>
+    value.length >= 6 || "Senha deve ter no mínimo 6 caracteres.",
+  email: (value) => {
+    if (user.value.email.length < 5) return true;
+    return emailPattern.test(value) || "E-mail inválido.";
+  },
+};
 const loginError = ref(false);
-const dealWithLoginError = () => {};
 const titleMessage = computed(() => {
-  return "Bem vindo de volta!";
+  return "Seja bem vindo!";
 });
 const onCancelClick = () => {
   user.value = {};
@@ -32,9 +41,10 @@ const onConfirmClick = () => {
     })
     .catch((error) => {
       if (error.response.status === 401) {
-        // dealWithLoginError();
         loginError.value = true;
         isLoading.value = false;
+        user.value.email = "";
+        user.value.password = "";
       }
     });
 };
@@ -56,8 +66,8 @@ const onConfirmClick = () => {
                 <v-text-field
                   v-model="user.email"
                   placeholder="Email"
+                  :rules="[rules.email]"
                   variant="outlined"
-                  hide-details
                   density="compact"
                   class="my-2"
                   autocomplete

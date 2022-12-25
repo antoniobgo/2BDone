@@ -47,6 +47,7 @@ class AuthService {
     return axios.post(API_URL + "/users", {
       email: user.email,
       password: user.password,
+      password_confirmation: user.passwordConfirmation,
     });
   }
 }
