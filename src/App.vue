@@ -24,7 +24,7 @@ const onConfirmAddBoardClick = () => {
       store.addBoard(newBoard);
       addBoardIsLoading.value = false;
       newBoard.value = {};
-      store.chosenBoardIndex.value = store.boards.length - 1;
+      // store.chosenBoardIndex.value = store.boards.length - 1;
     } else if (response.status === 422) {
       addBoardIsLoading.value = false;
     }
@@ -75,19 +75,26 @@ const onBoardClick = (index) => {
 </script>
 <template>
   <v-app>
-    <v-app-bar color="primary">
+    <v-app-bar color="#CACACA" flat>
       <template v-slot:prepend>
         <v-row align="center">
           <v-app-bar-nav-icon
+            v-if="store.isUserLoggedin"
             @click.stop="drawer = !drawer"
           ></v-app-bar-nav-icon>
-          <v-btn @click="router.push({ name: 'home' })" icon="mdi-home" />
+          <!-- <v-btn @click="router.push({ name: 'home' })" icon="mdi-home" /> -->
+          <v-img
+            @click="router.push({ name: 'home' })"
+            :src="require('@/assets/done.svg')"
+            class="logo ml-15 mr-2"
+          />
         </v-row>
       </template>
       <v-app-bar-title>2BDone</v-app-bar-title>
       <v-spacer />
       <div class="d-flex align-center" v-if="store.isUserLoggedIn">
         <v-btn class="mr-2" icon="mdi-account-circle" />
+
         <p class="mr-10">{{ store.loggedUser.email }}</p>
         <v-btn @click="onLogoutClick" variant="outlined">logout</v-btn>
       </div>
@@ -184,5 +191,13 @@ const onBoardClick = (index) => {
 <style>
 .v-application {
   font-family: "Times New Roman";
+}
+.logo {
+  /* background: url("./assets/2bdone.svg"); */
+  height: auto;
+  width: 35px;
+}
+.logo:hover {
+  cursor: pointer;
 }
 </style>

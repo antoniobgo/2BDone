@@ -30,14 +30,6 @@ class BoardService {
       },
     });
   }
-
-  // register(user) {
-  // return axios.post(API_URL + "register", {
-  // name: user.name,
-  // email: user.email,
-  // password: user.password,
-  // });
-  // }
 }
 
 export default new BoardService();

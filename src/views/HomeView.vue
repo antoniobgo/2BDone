@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount } from "vue";
+import { onBeforeMount, onBeforeUnmount } from "vue";
 import router from "../router/index.js";
 import { useStore } from "@/store/index";
 import BoardSection from "@/components/BoardSection.vue";
@@ -8,44 +8,22 @@ import AuthService from "@/services/auth.service";
 
 const store = useStore();
 
-const tryLoginUserWithTokens = () => {
-  // AuthService.loginWithToken()
-  //   .then((response) => {
-  //     if (response.status === 200)
-  //       store.$patch({
-  //         isUserLoggedIn: true,
-  //         loggedUser: response.data.user,
-  //       });
-  //   })
-  //   .catch((err) => {
-  //     localStorage.removeItem("token");
-  //     store.$patch({
-  //       isUserLoggedIn: false,
-  //       loggedUser: {},
-  //     });
-  //     router.push("login");
-  //   });
-};
-
 onBeforeMount(() => {
-  if (!store.isUserLoggedIn) {
-    // localStorage.getItem("token")
-    //   ? tryLoginUserWithTokens()
-    //   : router.push("login");
-    if (!localStorage.getItem("token")) router.push("login");
-    AuthService.loginWithToken().then((user) => {
-      if (user)
-        store.$patch({
-          isUserLoggedIn: true,
-          loggedUser: user,
-        });
-      else router.push("login");
-    });
-    BoardService.getBoards().then((response) => {
-      //eslint-disable-next-line
-      // debugger;
-      if (response.status === 200) store.setBoards(response.data);
-    });
+  if (!localStorage.getItem("token")) router.push("login");
+  else {
+    if (!store.loggedUser)
+      AuthService.loginWithToken().then((user) => {
+        if (user)
+          store.$patch({
+            isUserLoggedIn: true,
+            loggedUser: user,
+          });
+        else router.push("login");
+      });
+    if (store.boards.length === 0)
+      BoardService.getBoards().then((response) => {
+        if (response.status === 200) store.setBoards(response.data);
+      });
   }
 });
 </script>
