@@ -1,11 +1,13 @@
 <script setup>
 import { ref, computed, inject, onBeforeMount } from "vue";
+import { useDisplay } from "vuetify";
 import { useStore } from "@/store/index";
 import router from "@/router/index.js";
 import AuthService from "../services/auth.service";
 import BoardService from "../services/board.service";
 
 const axios = inject("axios");
+const { mdAndUp } = useDisplay();
 const store = useStore();
 const user = ref({});
 const isLoading = ref(false);
@@ -21,7 +23,7 @@ const rules = {
 };
 const loginError = ref(false);
 const titleMessage = computed(() => {
-  return "Seja bem vindo!";
+  return "Log in";
 });
 
 onBeforeMount(() => {
@@ -74,25 +76,26 @@ const onConfirmClick = () => {
 </script>
 <template>
   <div class="pa-10">
-    <v-row justify="center">
-      <v-col cols="5">
+    <v-row justify="center" class="mt-15">
+      <v-col cols="3" align-self="center">
         <v-card flat>
           <v-card-title>
-            <p class="text-h4">{{ titleMessage }}</p>
+            <p class="text-h4 mb-5">{{ titleMessage }}</p>
           </v-card-title>
-          <v-card-subtitle>
-            <p>Logue sua conta</p>
-          </v-card-subtitle>
           <v-card-text>
             <v-row no-gutters dense>
-              <v-col cols="7">
+              <v-col>
+                <p v-if="loginError" class="text-red mb-2">
+                  Email ou senha incorretos
+                </p>
+              </v-col>
+              <v-col cols="12">
                 <v-text-field
                   v-model="user.email"
                   placeholder="Email"
                   :rules="[rules.email]"
                   variant="outlined"
                   density="compact"
-                  class="my-2"
                   autocomplete
                 />
 
@@ -102,34 +105,41 @@ const onConfirmClick = () => {
                   variant="outlined"
                   hide-details
                   density="compact"
-                  class="my-2"
+                  class="mb-5"
                   type="password"
                 />
-              </v-col>
-            </v-row>
-            <v-col cols="7">
-              <v-row no-gutters dense justify="space-between">
-                <v-btn
-                  variant="outlined"
-                  @click="router.push({ name: 'signup' })"
-                  >Cadastre-se</v-btn
-                >
                 <v-btn
                   :loading="isLoading"
                   variant="outlined"
+                  size="large"
+                  class="w-100 bg-primary"
                   @click="onConfirmClick"
-                  >entrar</v-btn
+                  >Log in</v-btn
                 >
-              </v-row>
-            </v-col>
-            <v-col>
-              <p v-if="loginError" class="text-red">
-                Email ou senha incorretos
-              </p>
-            </v-col>
+                <div class="mt-5">
+                  <a href="/#/signup">Esqueceu a senha?</a>
+                </div>
+                <v-divider class="mt-5" />
+                <div class="w-100 d-flex justify-center mt-5">
+                  <p>Não tem uma conta? <a href="/#/signup">Crie aqui</a></p>
+                </div>
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
+      </v-col>
+      <v-col cols="3">
+        <v-img
+          @click="router.push({ name: 'home' })"
+          :src="require('@/assets/login_image.svg')"
+        />
       </v-col>
     </v-row>
   </div>
 </template>
+
+<style>
+.v-input__details {
+  padding-bottom: 5px;
+}
+</style>
