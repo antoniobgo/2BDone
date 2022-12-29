@@ -1,8 +1,9 @@
 <script setup>
-import { ref, computed, inject } from "vue";
+import { ref, computed, inject, onBeforeMount } from "vue";
 import { useStore } from "@/store/index";
 import router from "@/router/index.js";
 import AuthService from "../services/auth.service";
+import BoardService from "../services/board.service";
 
 const axios = inject("axios");
 const store = useStore();
@@ -22,6 +23,28 @@ const loginError = ref(false);
 const titleMessage = computed(() => {
   return "Seja bem vindo!";
 });
+
+onBeforeMount(() => {
+  if (localStorage.getItem("token")) {
+    if (store.isUserLoggedIn) router.push({ name: "home" });
+    else {
+      AuthService.loginWithToken().then((user) => {
+        if (user) {
+          store.$patch({
+            isUserLoggedIn: true,
+            loggedUser: user,
+          });
+        }
+      });
+      if (store.isUserLoggedIn && store.boards.length === 0)
+        BoardService.getBoards().then((response) => {
+          if (response.status === 200) store.setBoards(response.data);
+        });
+      router.push({ name: "home" });
+    }
+  }
+});
+
 const onCancelClick = () => {
   user.value = {};
   router.push({ name: "home" });
