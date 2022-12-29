@@ -11,7 +11,7 @@ const store = useStore();
 onBeforeMount(() => {
   if (!localStorage.getItem("token")) router.push("login");
   else {
-    if (!store.loggedUser)
+    if (!store.isUserLoggedIn)
       AuthService.loginWithToken().then((user) => {
         if (user)
           store.$patch({
@@ -29,7 +29,7 @@ onBeforeMount(() => {
 </script>
 <template>
   <div class="pa-10">
-    <div v-if="store.isUserLoggedIn && store.boards.length">
+    <div v-if="store.boards.length">
       <v-row justify="space-between" dense>
         <p class="text-h4">
           {{ store.boards[store.chosenBoardIndex].title }}
