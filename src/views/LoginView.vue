@@ -75,9 +75,9 @@ const onConfirmClick = () => {
 };
 </script>
 <template>
-  <div class="pa-10">
+  <div :class="mdAndUp ? 'pa-10' : 'pa-2'">
     <v-row justify="center" class="mt-15">
-      <v-col cols="3" align-self="center">
+      <v-col cols="12" md="5" lg="3" align-self="center">
         <v-card flat>
           <v-card-title>
             <p class="text-h4 mb-5">{{ titleMessage }}</p>
@@ -128,7 +128,7 @@ const onConfirmClick = () => {
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="3">
+      <v-col md="5" lg="3" v-if="mdAndUp">
         <v-img
           @click="router.push({ name: 'home' })"
           :src="require('@/assets/login_image.svg')"

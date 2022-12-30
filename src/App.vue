@@ -67,8 +67,9 @@ const onBoardClick = (index) => {
       <template v-slot:prepend>
         <v-row align="center">
           <v-app-bar-nav-icon
-            v-if="store.isUserLoggedin"
+            v-if="store.isUserLoggedIn"
             @click.stop="drawer = !drawer"
+            class="ml-2"
           ></v-app-bar-nav-icon>
           <v-img
             @click="router.push({ name: 'home' })"
