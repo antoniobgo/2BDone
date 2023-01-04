@@ -22,8 +22,6 @@ class BoardService {
 
   getBoards() {
     let token = localStorage.getItem("token");
-    //eslint-disable-next-line
-    // debugger;
     return axios.get(API_URL + "me/boards", {
       headers: {
         Authorization: `Bearer ${token}`,

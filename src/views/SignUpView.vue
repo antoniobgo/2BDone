@@ -57,10 +57,9 @@ const onConfirmClick = () => {
       isLoading.value = false;
     })
     .catch((error) => {
-      //eslint-disable-next-line
-      debugger;
       if (error.response.status === 422) showErrorMessage.value = true;
       isLoading.value = false;
+      user.value = {};
     });
 };
 </script>
