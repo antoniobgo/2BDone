@@ -8,11 +8,13 @@ import AuthService from "../services/auth.service";
 const axios = inject("axios");
 const store = useStore();
 const user = ref({});
+const showPassword = ref(false);
+const showPasswordConfirmation = ref(false);
 const titleMessage = computed(() => {
-  return "Cadastre-se! :)";
+  return "Cadastro";
 });
 const errorMessage = computed(() => {
-  return "Email já cadastrado.";
+  return "Email já em uso.";
 });
 const isLoading = ref(false);
 const showErrorMessage = ref(false);
@@ -20,13 +22,11 @@ const emailPattern =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 function isButtonDisabled() {
   if (
-    !user.value.name ||
     !user.value.email ||
     !user.value.password ||
     !user.value.passwordConfirmation
   )
     return true;
-  //eslint-disable-next-line
   return !(
     emailPattern.test(user.value.email) &&
     user.value.password === user.value.passwordConfirmation
@@ -47,80 +47,93 @@ const onCancelClick = () => {
   user.value = {};
 };
 const onConfirmClick = () => {
+  isLoading.value = true;
   AuthService.register(user.value)
     .then((response) => {
       if (response.status === 201) {
         user.value = {};
         router.push("/login");
       }
+      isLoading.value = false;
     })
     .catch((error) => {
-      if (error.response.status === 400) showErrorMessage.value = true;
+      //eslint-disable-next-line
+      debugger;
+      if (error.response.status === 422) showErrorMessage.value = true;
+      isLoading.value = false;
     });
 };
 </script>
 <template>
-  <div class="pa-10">
-    <v-row justify="center">
-      <v-col cols="6">
-        <v-card>
+  <div :class="mdAndUp ? 'pa-10' : 'pa-2'">
+    <v-row justify="center" class="mt-15">
+      <v-col cols="12" md="5" lg="3" align-self="center">
+        <v-card flat>
           <v-card-title>
-            <p class="text-h2">{{ titleMessage }}</p>
+            <p class="text-h4 mb-5">{{ titleMessage }}</p>
           </v-card-title>
           <v-card-text>
-            <v-text-field
-              v-model="user.name"
-              :rules="[rules.required]"
-              placeholder="Nome"
-              variant="outlined"
-              density="compact"
-              class="my-2"
-            />
-            <v-text-field
-              v-model="user.email"
-              :rules="[rules.required, rules.email]"
-              placeholder="Email"
-              variant="outlined"
-              density="compact"
-              class="my-2"
-              autocomplete
-            />
-            <v-text-field
-              v-model="user.password"
-              placeholder="Senha"
-              :rules="[rules.required, rules.counter]"
-              variant="outlined"
-              density="compact"
-              class="my-2"
-              type="password"
-            />
-            <v-text-field
-              v-model="user.passwordConfirmation"
-              placeholder="Confirmar Senha"
-              variant="outlined"
-              :rules="[
-                rules.required,
-                rules.counter,
-                rules.passwordConfirmation,
-              ]"
-              density="compact"
-              class="my-2"
-              type="password"
-            />
-          </v-card-text>
-          <v-row no-gutters dense>
-            <p v-if="showErrorMessage" class="text-red">
-              {{ errorMessage }}
-            </p>
-          </v-row>
-          <v-card-actions>
-            <v-row justify="space-around">
-              <v-btn @click="onCancelClick">cancelar</v-btn>
-              <v-btn @click="onConfirmClick" :disabled="isButtonDisabled()"
-                >cadastrar</v-btn
-              >
+            <v-row no-gutters dense>
+              <v-col>
+                <p v-if="loginError" class="text-red mb-2">
+                  Email ou senha incorretos
+                </p>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.email"
+                  placeholder="Email"
+                  :rules="[rules.email]"
+                  variant="outlined"
+                  density="compact"
+                  autocomplete
+                />
+
+                <v-text-field
+                  v-model="user.password"
+                  placeholder="Senha"
+                  variant="outlined"
+                  :rules="[rules.required, rules.counter]"
+                  density="compact"
+                  :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="showPassword ? 'text' : 'password'"
+                  @click:append-inner="showPassword = !showPassword"
+                />
+                <v-text-field
+                  v-model="user.passwordConfirmation"
+                  placeholder="Senha"
+                  variant="outlined"
+                  :append-inner-icon="
+                    showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'
+                  "
+                  :type="showPasswordConfirmation ? 'text' : 'password'"
+                  :rules="[rules.required, rules.passwordConfirmation]"
+                  density="compact"
+                  @click:append-inner="
+                    showPasswordConfirmation = !showPasswordConfirmation
+                  "
+                />
+                <v-row no-gutters dense>
+                  <p v-if="showErrorMessage" class="text-red mb-2">
+                    {{ errorMessage }}
+                  </p>
+                </v-row>
+                <v-btn
+                  :loading="isLoading"
+                  variant="outlined"
+                  size="large"
+                  class="w-100 bg-primary"
+                  :disabled="isButtonDisabled()"
+                  @click="onConfirmClick"
+                  >Cadastrar</v-btn
+                >
+                <v-divider class="mt-5" />
+                <div class="w-100 d-flex justify-center mt-5">
+                  <p>Já tem uma conta? <a href="/#/login">Entre aqui</a></p>
+                </div>
+              </v-col>
             </v-row>
-          </v-card-actions>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
