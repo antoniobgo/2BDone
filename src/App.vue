@@ -29,7 +29,6 @@ const onConfirmAddBoardClick = () => {
       if (response.status === 201) {
         if (addBoardError.value) addBoardError.value = false;
         store.addBoard(newBoard.value);
-        // store.$patch
         newBoard.value = {};
         showAddBoardField.value = false;
       }
@@ -63,7 +62,7 @@ const onBoardClick = (index) => {
 </script>
 <template>
   <v-app>
-    <v-app-bar color="#CACACA" flat>
+    <v-app-bar :color="store.isUserLoggedIn ? 'primary' : '#fafafa'" flat>
       <template v-slot:prepend>
         <v-row align="center">
           <v-app-bar-nav-icon
@@ -78,7 +77,11 @@ const onBoardClick = (index) => {
           />
         </v-row>
       </template>
-      <v-app-bar-title>2BDone</v-app-bar-title>
+      <v-app-bar-title>
+        <p :class="store.isUserLoggedIn ? 'text-white' : 'text-primary'">
+          2BDone
+        </p>
+      </v-app-bar-title>
       <v-spacer />
       <div
         class="d-flex align-center"
@@ -97,6 +100,7 @@ const onBoardClick = (index) => {
           @click="router.push('login')"
           variant="outlined"
           class="mr-4"
+          color="primary"
         >
           Entrar
         </v-btn>
