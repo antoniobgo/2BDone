@@ -6,6 +6,8 @@ export const useStore = defineStore("items", () => {
   const loggedUser = ref({});
   const chosenBoardIndex = ref(0);
   const boards = ref([]);
+  const sections = ref([]);
+  const items = ref([]);
 
   function setBoards(newBoards) {
     boards.value = newBoards;
@@ -54,6 +56,8 @@ export const useStore = defineStore("items", () => {
     isUserLoggedIn,
     loggedUser,
     boards,
+    sections,
+    items,
     chosenBoardIndex,
     addItemToSection,
     addBoard,

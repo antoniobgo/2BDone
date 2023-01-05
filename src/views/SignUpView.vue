@@ -128,7 +128,10 @@ const onConfirmClick = () => {
                 >
                 <v-divider class="mt-5" />
                 <div class="w-100 d-flex justify-center mt-5">
-                  <p>Já tem uma conta? <a href="/#/login">Entre aqui</a></p>
+                  <p>
+                    Já tem uma conta?
+                    <router-link to="/login">Entre aqui</router-link>
+                  </p>
                 </div>
               </v-col>
             </v-row>

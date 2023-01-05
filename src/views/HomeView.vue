@@ -9,6 +9,7 @@ import AuthService from "@/services/auth.service";
 const store = useStore();
 
 onBeforeMount(() => {
+  console.log("rá");
   if (!localStorage.getItem("token")) router.push("login");
   else {
     if (!store.isUserLoggedIn)
@@ -20,10 +21,32 @@ onBeforeMount(() => {
           });
         else router.push("login");
       });
-    if (store.boards.length === 0)
+    if (store.boards.length === 0) {
       BoardService.getBoards().then((response) => {
-        if (response.status === 200) store.setBoards(response.data);
+        if (response.status === 200) {
+          store.boards = response.data;
+          if (store.boards.length > 0) {
+            BoardService.getBoardSections(store.boards[0].id).then(
+              (response) => {
+                if (response.status === 200) {
+                  store.sections = response.data;
+                  store.sections.forEach((section, index) => {
+                    BoardService.getSectionItems(section.id).then(
+                      (response) => {
+                        if (response.status === 200) {
+                          // Verificar se adicionar propriedade nova quebra reatividade
+                          store.sections[index].items = response.data;
+                        }
+                      }
+                    );
+                  });
+                }
+              }
+            );
+          }
+        }
       });
+    }
   }
 });
 </script>
@@ -56,11 +79,11 @@ onBeforeMount(() => {
       </v-row>
       <v-row dense class="mt-15">
         <!-- TODO: logica do chosenboardid nao funciona mais-->
-        <!-- <BoardSection
-          v-for="section in store.boards[store.chosenBoardId - 1].sections"
-          :key="section.name"
+        <BoardSection
+          v-for="section in store.sections"
+          :key="section.id"
           :section="section"
-        /> -->
+        />
       </v-row>
     </div>
     <div v-else>

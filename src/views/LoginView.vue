@@ -117,11 +117,16 @@ const onConfirmClick = () => {
                   >Log in</v-btn
                 >
                 <div class="mt-5">
-                  <a href="/#/signup">Esqueceu a senha?</a>
+                  <router-link to="/recuperar-senha"
+                    >Esqueceu a senha?</router-link
+                  >
                 </div>
                 <v-divider class="mt-5" />
                 <div class="w-100 d-flex justify-center mt-5">
-                  <p>Não tem uma conta? <a href="/#/signup">Crie aqui</a></p>
+                  <p>
+                    Não tem uma conta?
+                    <router-link to="/signup">Crie aqui</router-link>
+                  </p>
                 </div>
               </v-col>
             </v-row>

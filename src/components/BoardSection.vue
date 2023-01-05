@@ -36,13 +36,12 @@ const addSectionItem = () => {
     <v-card-title>
       <v-row justify="space-between">
         <div class="d-flex">
-          <p>{{ section.name }}</p>
-          <p class="ml-3">{{ props.section.items.length }}</p>
+          <p>{{ section.title }}</p>
         </div>
         <v-btn flat icon="mdi-dots-horizontal"></v-btn>
       </v-row>
     </v-card-title>
-    <v-card-text>
+    <v-card-text v-if="props.section.items">
       <SectionItem
         v-for="item in props.section.items"
         :key="item.description"

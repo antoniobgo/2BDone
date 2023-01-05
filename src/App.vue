@@ -56,8 +56,11 @@ const onLogoutClick = () => {
   router.push({ name: "login" });
 };
 
-const onBoardClick = (index) => {
+const onBoardClick = (board, index) => {
   store.chosenBoardIndex = index;
+  BoardService.getBoardSections(board.id).then((response) => {
+    if (response.status === 200) store.sections = response.data;
+  });
 };
 </script>
 <template>
@@ -177,7 +180,7 @@ const onBoardClick = (index) => {
               :title="board.title"
               rounded="xl"
               :value="board.title"
-              @click="onBoardClick(index)"
+              @click="onBoardClick(board, index)"
             >
             </v-list-item>
           </v-list-group>

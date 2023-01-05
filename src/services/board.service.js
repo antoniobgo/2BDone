@@ -1,7 +1,4 @@
 import axios from "axios";
-// import { useStore } from "@/store/index";
-
-// const store = useStore();
 const API_URL = "http://localhost:3000/";
 
 class BoardService {
@@ -23,6 +20,22 @@ class BoardService {
   getBoards() {
     let token = localStorage.getItem("token");
     return axios.get(API_URL + "me/boards", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+  getBoardSections(boardId) {
+    let token = localStorage.getItem("token");
+    return axios.get(`${API_URL}/boards/${boardId}/sections`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+  getSectionItems(sectionId) {
+    let token = localStorage.getItem("token");
+    return axios.get(`${API_URL}/sections/${sectionId}/items`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
