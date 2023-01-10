@@ -29,13 +29,13 @@ onBeforeMount(() => {
             BoardService.getBoardSections(store.boards[0].id).then(
               (response) => {
                 if (response.status === 200) {
-                  store.sections = response.data;
-                  store.sections.forEach((section, index) => {
+                  store.boards[0].sections = response.data;
+                  store.boards[0].sections.forEach((section, index) => {
                     BoardService.getSectionItems(section.id).then(
                       (response) => {
                         if (response.status === 200) {
                           // Verificar se adicionar propriedade nova quebra reatividade
-                          store.sections[index].items = response.data;
+                          store.boards[0].sections[index].items = response.data;
                         }
                       }
                     );
@@ -78,12 +78,13 @@ onBeforeMount(() => {
         </v-menu>
       </v-row>
       <v-row dense class="mt-15">
-        <!-- TODO: logica do chosenboardid nao funciona mais-->
-        <BoardSection
-          v-for="section in store.sections"
+        <v-col
+          cols="3"
+          v-for="section in store.boards[store.chosenBoardIndex].sections"
           :key="section.id"
-          :section="section"
-        />
+        >
+          <BoardSection :section="section" />
+        </v-col>
       </v-row>
     </div>
     <div v-else>

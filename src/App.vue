@@ -59,7 +59,8 @@ const onLogoutClick = () => {
 const onBoardClick = (board, index) => {
   store.chosenBoardIndex = index;
   BoardService.getBoardSections(board.id).then((response) => {
-    if (response.status === 200) store.sections = response.data;
+    // not sure this index is correct yet
+    if (response.status === 200) store.boards[index].sections = response.data;
   });
 };
 </script>

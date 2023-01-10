@@ -41,6 +41,21 @@ class BoardService {
       },
     });
   }
+  addItem(item, sectionId) {
+    let token = localStorage.getItem("token");
+    return axios.post(
+      `${API_URL}/sections/${sectionId}/items`,
+      {
+        title: item.title,
+        description: item.description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
 }
 
 export default new BoardService();
