@@ -4,6 +4,7 @@ import { useStore } from "@/store/index";
 
 const store = useStore();
 const toggle = ref(false);
+const isMouseOverItem = ref(false);
 const onEditMode = ref(false);
 const props = defineProps(["item", "sectionId"]);
 const task = ref(props.item);
@@ -22,7 +23,12 @@ const onConfirmEditClick = () => {
 </script>
 
 <template>
-  <v-sheet rounded style="border: 1px solid black">
+  <v-sheet
+    @mouseover="isMouseOverItem = true"
+    @mouseleave="isMouseOverItem = false"
+    rounded
+    style="border: 2px solid black"
+  >
     <v-row v-if="!onEditMode">
       <v-col cols="2">
         <v-radio @click="toggle = !toggle" v-model="toggle"> </v-radio>
@@ -36,6 +42,7 @@ const onConfirmEditClick = () => {
         <v-menu location="start">
           <template v-slot:activator="{ props }">
             <v-btn
+              v-if="isMouseOverItem"
               class="pr-2"
               v-bind="props"
               flat

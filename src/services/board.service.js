@@ -3,7 +3,7 @@ const API_URL = "http://localhost:3000/";
 
 class BoardService {
   createBoard(board) {
-    let token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     return axios.post(
       API_URL + "boards",
       {
@@ -17,8 +17,23 @@ class BoardService {
     );
   }
 
+  editBoard(newBoard) {
+    const token = localStorage.getItem("token");
+    return axios.patch(
+      `${API_URL}/boards/${newBoard.id}`,
+      {
+        title: newBoard.title,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
   getBoards() {
-    let token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     return axios.get(API_URL + "me/boards", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -26,7 +41,7 @@ class BoardService {
     });
   }
   getBoardSections(boardId) {
-    let token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     return axios.get(`${API_URL}/boards/${boardId}/sections`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,7 +49,7 @@ class BoardService {
     });
   }
   getSectionItems(sectionId) {
-    let token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     return axios.get(`${API_URL}/sections/${sectionId}/items`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -42,7 +57,7 @@ class BoardService {
     });
   }
   addItem(item, sectionId) {
-    let token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     return axios.post(
       `${API_URL}/sections/${sectionId}/items`,
       {

@@ -95,7 +95,7 @@ watch(
     <v-card-text v-if="props.section.items" class="pb-0 mb-0">
       <SectionItem
         v-for="item in props.section.items"
-        :key="item.description"
+        :key="item.id"
         :item="item"
         :sectionId="props.section.id"
         class="mb-2"
@@ -125,11 +125,12 @@ watch(
           <p v-if="taskFieldInputError" class="text-red ml-4">
             {{ taskFieldInputErrorMessage }}
           </p>
-          <v-row justify="end" class="mt-2">
-            <v-btn @click="onCancelClick"> cancelar </v-btn>
+          <v-row justify="end" class="mt-2" no-gutters>
+            <v-btn @click="onCancelClick" size="small"> cancelar </v-btn>
             <v-btn
               @click="onConfirmAddItem"
               :loading="isAddItemButtonLoading"
+              size="small"
               :disabled="
                 taskItem.title.length === 0 ||
                 taskItem.title.length > 70 ||
