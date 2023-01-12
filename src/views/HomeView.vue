@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeMount, onBeforeUnmount, watch, ref } from "vue";
+import { onBeforeMount, onBeforeUnmount, watch, ref, computed } from "vue";
 import router from "../router/index.js";
 import { useStore } from "@/store/index";
 import BoardSection from "@/components/BoardSection.vue";
@@ -10,18 +10,44 @@ const store = useStore();
 const onEditMode = ref(false);
 const onConfirmEditBoardLoading = ref(false);
 const board = ref({});
+const onEditBoardResponseError = ref(false);
+const isTitleLengthInvalid = ref(false);
 
-const onCancelEditProjectClick = () => {
+const boardInputErrorMessage = computed(() => {
+  const titleLength = board.value.title.length;
+  return titleLength > 70
+    ? `Título com ${titleLength}/70 caracteres`
+    : titleLength === 0
+    ? `Título não deve ser vazio.`
+    : "";
+});
+
+const boardResponseError =
+  "Algo inesperado ocorreu. Por favor, tente novamente.";
+
+const onCancelEditBoardClick = () => {
   onEditMode.value = false;
+  onEditBoardResponseError.value = false;
   board.value = store.boards[store.chosenBoardIndex];
 };
 
-const onConfirmAddBoardClick = () => {
-  // onConfirmEditBoardLoading.value = true;
-  // board.value.id = store.boards[store.chosenBoardIndex].id
-  // BoardService.editBoard(board.value).then(response => {
-  //   if()
-  // })
+const onConfirmEditBoardClick = () => {
+  onConfirmEditBoardLoading.value = true;
+  board.value.id = store.boards[store.chosenBoardIndex].id;
+  BoardService.editBoard(board.value)
+    .then((response) => {
+      if (response.status === 200) {
+        board.value.title = response.data.board.title;
+        store.boards[store.chosenBoardIndex].title = response.data.board.title;
+        onEditMode.value = false;
+        if (onEditBoardResponseError.value)
+          onEditBoardResponseError.value = false;
+      }
+    })
+    .catch((response) => {
+      onEditBoardResponseError.value = true;
+    });
+  onConfirmEditBoardLoading.value = false;
 };
 
 const LogInWithToken = () => {
@@ -36,6 +62,7 @@ const LogInWithToken = () => {
     });
 };
 
+//Analisar um jeito de juntar essas duas funções
 const getAndSaveFirstBoardData = () => {
   BoardService.getBoards().then((response) => {
     if (response.status === 200) {
@@ -103,6 +130,16 @@ watch(
     getNewSelectedBoardData();
   }
 );
+
+watch(
+  () => board.value.title,
+  (title) => {
+    if (title.length > 70 || title.length === 0) {
+      isTitleLengthInvalid.value = true;
+      console.log("ra");
+    } else isTitleLengthInvalid.value = false;
+  }
+);
 </script>
 <template>
   <div class="pa-10">
@@ -133,21 +170,28 @@ watch(
       </v-row>
       <v-row v-else>
         <v-col>
-          <v-text-field v-model="board.title"> </v-text-field>
+          <v-text-field v-model="board.title" hide-details class="mb-2">
+          </v-text-field>
+          <p v-if="isTitleLengthInvalid" class="text-red">
+            {{ boardInputErrorMessage }}
+          </p>
           <v-row no-gutters>
             <v-btn
-              @click="onConfirmEditProjectClick"
+              @click="onConfirmEditBoardClick"
               :loading="onConfirmEditBoardLoading"
-              :disabled="board.title.length === 0"
+              :disabled="board.title.length === 0 || board.title.length > 70"
               size="small"
               color="primary"
             >
               confirmar
             </v-btn>
-            <v-btn @click="onCancelEditProjectClick" size="small">
+            <v-btn @click="onCancelEditBoardClick" size="small">
               cancelar
             </v-btn>
           </v-row>
+          <p v-if="onEditBoardResponseError" class="text-red">
+            {{ boardResponseError }}
+          </p>
         </v-col>
       </v-row>
       <v-row dense class="mt-15">
