@@ -162,9 +162,6 @@ watch(
             </template>
 
             <v-list>
-              <v-list-item @click="showAddBoardSection = true">
-                <v-list-item-title>Adicionar seção</v-list-item-title>
-              </v-list-item>
               <v-list-item @click="showEditMode = true">
                 <v-list-item-title>Editar projeto</v-list-item-title>
               </v-list-item>
