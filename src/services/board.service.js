@@ -56,6 +56,22 @@ class BoardService {
       },
     });
   }
+
+  addSection(boardId, title) {
+    const token = localStorage.getItem("token");
+    return axios.post(
+      `${API_URL}/boards/${boardId}/sections`,
+      {
+        title,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
   addItem(item, sectionId) {
     const token = localStorage.getItem("token");
     return axios.post(

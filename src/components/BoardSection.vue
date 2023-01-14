@@ -83,7 +83,7 @@ watch(
 );
 </script>
 <template>
-  <v-card flat width="300">
+  <v-card flat>
     <v-card-title>
       <v-row justify="space-between">
         <div class="d-flex">
