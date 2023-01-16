@@ -147,8 +147,14 @@ watch(
   <div>
     <div>
       <div v-if="store.boards.length">
-        <v-row v-if="!showEditMode" no-gutters justify="space-between" dense>
-          <p class="text-h4">
+        <v-row
+          v-if="!showEditMode"
+          class="mx-5"
+          no-gutters
+          justify="space-between"
+          dense
+        >
+          <p class="text-h4 mt-5">
             {{ board.title }}
           </p>
           <v-menu>
@@ -197,7 +203,7 @@ watch(
             </p>
           </v-col>
         </v-row>
-        <v-row dense no-gutters class="mt-15 flex-nowrap">
+        <v-row dense no-gutters class="ml-3 mt-5 flex-nowrap">
           <v-col
             cols="2"
             v-for="section in store.boards[store.chosenBoardIndex].sections"

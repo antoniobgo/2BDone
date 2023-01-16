@@ -25,6 +25,10 @@ const taskFieldInputErrorMessage = computed(() => {
     : "";
 });
 
+const sectionItemsLength = computed(() => {
+  return props.section.items ? props.section.items.length : 0;
+});
+
 const onAddItemClick = () => {
   showAddItemField.value = true;
   if (addItemError.value) addItemError.value = false;
@@ -84,12 +88,26 @@ watch(
 </script>
 <template>
   <v-card flat>
-    <v-card-title>
-      <v-row justify="space-between">
+    <v-card-title class="pb-0 pl-3">
+      <v-row no-gutters justify="space-between" align="center">
         <div class="d-flex">
           <p>{{ section.title }}</p>
+          <p class="ml-2 small-text grey-color">{{ sectionItemsLength }}</p>
         </div>
-        <v-btn flat icon="mdi-dots-horizontal"></v-btn>
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" flat icon="mdi-dots-horizontal"></v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item @click="showEditMode = true">
+              <v-list-item-title>Editar seção</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>Excluir seção</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-row>
     </v-card-title>
     <v-card-text v-if="props.section.items" class="pb-0 mb-0">

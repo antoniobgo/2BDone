@@ -197,14 +197,18 @@ const onBoardClick = (board, index) => {
 </template>
 
 <style>
-.v-application {
-  font-family: "Times New Roman";
-}
 .logo {
   height: auto;
   width: 35px;
 }
 .logo:hover {
   cursor: pointer;
+}
+
+.small-text {
+  font-size: 13px;
+}
+.grey-color {
+  color: #948680;
 }
 </style>
