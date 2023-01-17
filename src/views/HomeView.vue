@@ -93,7 +93,7 @@ watch(
 );
 </script>
 <template>
-  <div v-if="store.boards.length">
+  <div v-if="store.boards.length" class="overflow-x-auto h-100">
     <ShowOrEditBoard :board="board"></ShowOrEditBoard>
     <v-row dense no-gutters class="ml-3 mt-5 flex-nowrap">
       <v-col

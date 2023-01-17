@@ -69,7 +69,9 @@ const onConfirmEditClick = () => {
         </v-col>
       </v-row>
       <v-row no-gutters dense>
-        <v-col cols="2"></v-col>
+        <v-col cols="2">
+          <p></p>
+        </v-col>
         <p style="font-size: 12px" class="grey-color">
           {{ props.item.description }}
         </p>

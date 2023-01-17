@@ -110,7 +110,7 @@ watch(
         </v-menu>
       </v-row>
     </v-card-title>
-    <v-card-text v-if="props.section.items" class="pb-0 mb-0">
+    <v-card-text v-if="props.section.items" class="pb-0 mb-0 overflow-y-auto">
       <SectionItem
         v-for="item in props.section.items"
         :key="item.id"
