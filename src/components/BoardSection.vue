@@ -56,6 +56,9 @@ const onConfirmAddItem = () => {
         let sectionIndex = store.boards[
           store.chosenBoardIndex
         ].sections.indexOf(props.section);
+        if (!store.boards[store.chosenBoardIndex].sections[sectionIndex].items)
+          store.boards[store.chosenBoardIndex].sections[sectionIndex].items =
+            [];
         store.boards[store.chosenBoardIndex].sections[sectionIndex].items.push(
           response.data
         );
@@ -96,7 +99,11 @@ watch(
         </div>
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn v-bind="props" flat icon="mdi-dots-horizontal"></v-btn>
+            <v-btn
+              v-bind="props"
+              flat
+              icon="mdi-dots-horizontal grey-color"
+            ></v-btn>
           </template>
 
           <v-list>
@@ -110,14 +117,16 @@ watch(
         </v-menu>
       </v-row>
     </v-card-title>
-    <v-card-text v-if="props.section.items" class="pb-0 mb-0">
-      <SectionItem
-        v-for="item in props.section.items"
-        :key="item.id"
-        :item="item"
-        :sectionId="props.section.id"
-        class="mb-2"
-      />
+    <v-card-text class="pb-0 mb-0 overflow-y-auto">
+      <div v-if="props.section.items">
+        <SectionItem
+          v-for="item in props.section.items"
+          :key="item.id"
+          :item="item"
+          :sectionId="props.section.id"
+          class="mb-2"
+        />
+      </div>
       <v-sheet v-if="showAddItemField" style="border: 1px solid black">
         <v-text-field
           v-model="taskItem.title"

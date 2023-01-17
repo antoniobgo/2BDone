@@ -68,18 +68,16 @@ const onBoardClick = (board, index) => {
   <v-app>
     <v-app-bar :color="store.isUserLoggedIn ? 'primary' : '#fafafa'" flat>
       <template v-slot:prepend>
-        <v-row align="center">
-          <v-app-bar-nav-icon
-            v-if="store.isUserLoggedIn"
-            @click.stop="drawer = !drawer"
-            class="ml-2"
-          ></v-app-bar-nav-icon>
-          <v-img
-            @click="router.push({ name: 'home' })"
-            :src="require('@/assets/done.svg')"
-            class="logo ml-15 mr-2"
-          />
-        </v-row>
+        <v-app-bar-nav-icon
+          v-if="store.isUserLoggedIn"
+          @click.stop="drawer = !drawer"
+          class="ml-2"
+        ></v-app-bar-nav-icon>
+        <v-img
+          @click="router.push({ name: 'home' })"
+          :src="require('@/assets/done.svg')"
+          class="logo ml-15 mr-2"
+        />
       </template>
       <v-app-bar-title>
         <p :class="store.isUserLoggedIn ? 'text-white' : 'text-primary'">
@@ -189,7 +187,7 @@ const onBoardClick = (board, index) => {
       </v-card>
     </v-navigation-drawer>
     <v-main>
-      <v-container fluid>
+      <v-container fluid class="h-100 pa-0">
         <router-view />
       </v-container>
     </v-main>
