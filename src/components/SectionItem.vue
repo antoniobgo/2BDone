@@ -72,9 +72,11 @@ const onConfirmEditClick = () => {
         <v-col cols="2">
           <p></p>
         </v-col>
-        <p style="font-size: 12px" class="grey-color">
-          {{ props.item.description }}
-        </p>
+        <v-col cols="10">
+          <p style="font-size: 12px" class="grey-color">
+            {{ props.item.description }}
+          </p>
+        </v-col>
       </v-row>
     </div>
     <div v-else>

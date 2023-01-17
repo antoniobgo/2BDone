@@ -189,7 +189,7 @@ const onBoardClick = (board, index) => {
       </v-card>
     </v-navigation-drawer>
     <v-main>
-      <v-container fluid class="h-100">
+      <v-container fluid class="h-100 pa-0">
         <router-view />
       </v-container>
     </v-main>

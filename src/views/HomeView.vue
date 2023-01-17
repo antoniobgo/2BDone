@@ -97,7 +97,9 @@ watch(
     <ShowOrEditBoard :board="board"></ShowOrEditBoard>
     <v-row dense no-gutters class="ml-3 mt-5 flex-nowrap">
       <v-col
-        cols="2"
+        cols="8"
+        md="6"
+        lg="2"
         v-for="section in store.boards[store.chosenBoardIndex].sections"
         :key="section.id"
       >
