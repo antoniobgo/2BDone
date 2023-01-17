@@ -25,11 +25,11 @@ const boardInputErrorMessage = computed(() => {
 const onCancelEditBoardClick = () => {
   showEditMode.value = false;
   onEditBoardResponseError.value = false;
-  board.value = store.boards[store.chosenBoardIndex];
+  board.value.title = store.boards[store.chosenBoardIndex].title;
 };
 
 onBeforeMount(() => {
-  board.value = store.boards[store.chosenBoardIndex];
+  board.value.title = store.boards[store.chosenBoardIndex].title;
 });
 
 const onConfirmEditBoardClick = () => {
