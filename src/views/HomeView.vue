@@ -106,7 +106,7 @@ watch(
         <BoardSection :section="section" />
       </v-col>
       <v-col cols="2">
-        <AddSectionButton> </AddSectionButton>
+        <AddSectionButton />
       </v-col>
     </v-row>
   </div>

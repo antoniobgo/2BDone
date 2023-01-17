@@ -59,6 +59,13 @@ watch(
     } else isTitleLengthInvalid.value = false;
   }
 );
+
+watch(
+  () => store.chosenBoardIndex,
+  (index) => {
+    board.value.title = store.boards[store.chosenBoardIndex].title;
+  }
+);
 </script>
 
 <template>
