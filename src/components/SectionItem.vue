@@ -30,7 +30,7 @@ const onConfirmEditClick = () => {
     style="border: 1px solid #e0e0e0"
   >
     <div v-if="!onEditMode">
-      <v-row no-gutters>
+      <v-row no-gutters dense>
         <v-col cols="2">
           <v-radio
             @click="toggle = !toggle"
@@ -49,9 +49,10 @@ const onConfirmEditClick = () => {
             <template v-slot:activator="{ props }">
               <v-btn
                 v-show="isMouseOverItem"
-                class="pr-2"
+                class="mr-2"
                 v-bind="props"
                 flat
+                size="small"
                 icon="mdi-dots-horizontal"
               ></v-btn>
             </template>
