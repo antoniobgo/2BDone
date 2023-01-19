@@ -1,10 +1,11 @@
 <script setup>
 import { ref, onBeforeMount, watch, computed } from "vue";
+import { useDisplay } from "vuetify";
 import { useStore } from "@/store/index";
 import BoardService from "@/services/board.service";
 
 const store = useStore();
-
+const { mdAndUp } = useDisplay();
 const showEditMode = ref(false);
 const isTitleLengthInvalid = ref(false);
 const board = ref({});
@@ -69,15 +70,15 @@ watch(
 </script>
 
 <template>
-  <div v-if="!showEditMode" class="d-flex mx-5 justify-space-between">
+  <div v-if="!showEditMode" class="d-flex mx-10 mt-7 justify-space-between">
     <p class="text-h4 mt-5">
       {{ board.title }}
     </p>
     <v-menu>
       <template v-slot:activator="{ props }">
         <v-btn
-          class="pr-2"
           v-bind="props"
+          size="large"
           flat
           icon="mdi-dots-horizontal"
         ></v-btn>
@@ -93,24 +94,32 @@ watch(
       </v-list>
     </v-menu>
   </div>
-  <div v-else>
+  <div v-else :class="mdAndUp ? 'w-25' : 'w-100'">
     <div class="d-flex flex-column">
-      <v-text-field v-model="board.title" hide-details class="mb-2" />
+      <v-text-field
+        v-model="board.title"
+        variant="outlined"
+        hide-details
+        compact
+        class="ma-2"
+      />
       <p v-if="isTitleLengthInvalid" class="text-red">
         {{ boardInputErrorMessage }}
       </p>
     </div>
-    <div class="d-flex">
+    <div class="d-flex justify-end mr-2">
+      <v-btn @click="onCancelEditBoardClick" size="x-small" class="mr-2">
+        cancelar
+      </v-btn>
       <v-btn
         @click="onConfirmEditBoardClick"
         :loading="onConfirmEditBoardLoading"
         :disabled="board.title.length === 0 || board.title.length > 70"
-        size="small"
+        size="x-small"
         color="primary"
       >
         confirmar
       </v-btn>
-      <v-btn @click="onCancelEditBoardClick" size="small"> cancelar </v-btn>
     </div>
     <p v-if="onEditBoardResponseError" class="text-red">
       {{ boardResponseError }}

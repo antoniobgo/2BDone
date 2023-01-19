@@ -5,6 +5,8 @@ export const useStore = defineStore("items", () => {
   const isUserLoggedIn = ref(false);
   const loggedUser = ref({});
   const chosenBoardIndex = ref(0);
+
+  //TODO: resolver a questão de setar arrays dentro de elementos que ainda não existem e não vem setados do back (?)
   const boards = ref([]);
   const sections = ref([]);
   const items = ref([]);
