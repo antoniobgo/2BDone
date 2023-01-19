@@ -126,7 +126,7 @@ const onBoardClick = (board, index) => {
           />
         </v-list>
 
-        <v-list>
+        <v-list :opened="['Projetos']">
           <v-list-group class="pt-5" value="Projetos">
             <template v-slot:activator="{ props }">
               <v-list-item
@@ -136,14 +136,15 @@ const onBoardClick = (board, index) => {
                 value="projects"
               ></v-list-item>
             </template>
-            <v-row dense no-gutters :justify="justifyValue">
+            <v-row dense no-gutters justify="center">
               <v-btn
                 v-if="!showAddBoardField"
                 prepend-icon="mdi-plus-circle-outline"
                 @click="showAddBoardField = true"
-                size="small"
                 flat
-              />
+                size="small"
+                >Criar Projeto</v-btn
+              >
               <v-col v-else cols="11" class="mb-7">
                 <v-text-field
                   v-model="newBoard.title"
@@ -195,6 +196,10 @@ const onBoardClick = (board, index) => {
 </template>
 
 <style>
+body {
+  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
 .logo {
   height: auto;
   width: 35px;

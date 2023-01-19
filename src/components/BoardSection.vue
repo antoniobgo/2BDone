@@ -1,9 +1,11 @@
 <script setup>
 import { defineProps, ref, computed, watch } from "vue";
+import { useDisplay } from "vuetify";
 import { useStore } from "@/store/index";
 import SectionItem from "./SectionItem.vue";
 import BoardService from "@/services/board.service";
 
+const { mdAndUp } = useDisplay();
 const store = useStore();
 const props = defineProps(["section"]);
 const showAddItemField = ref(false);
@@ -117,7 +119,10 @@ watch(
         </v-menu>
       </v-row>
     </v-card-title>
-    <v-card-text class="pb-0 mb-0 overflow-y-auto">
+    <v-card-text
+      class="pb-0 mb-0 overflow-y-auto card-text-height"
+      :class="mdAndUp ? 'desktop-card-text-height' : 'mobile-card-text-height'"
+    >
       <div v-if="props.section.items">
         <SectionItem
           v-for="item in props.section.items"
@@ -187,4 +192,11 @@ watch(
   </v-card>
 </template>
 
-<style></style>
+<style>
+.desktop-card-text-height {
+  max-height: 65vh;
+}
+.mobile-card-text-height {
+  max-height: 55vh;
+}
+</style>
