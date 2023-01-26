@@ -177,12 +177,13 @@ watch(
           </p>
         </v-col>
       </v-row>
-      <v-row v-else justify="start">
+      <v-row v-else no-gutters dense justify="start">
         <v-col>
           <v-btn
             prepend-icon="mdi-plus-circle-outline"
             @click="onAddItemClick"
             size="small"
+            class="ml-3"
           >
             adicionar tarefa
           </v-btn>
