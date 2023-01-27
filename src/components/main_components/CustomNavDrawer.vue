@@ -37,12 +37,8 @@ const onCancelClick = () => {
   showAddBoardField.value = false;
 };
 
-const onBoardClick = (board, index) => {
+const setChosenBoardIndex = (index) => {
   store.chosenBoardIndex = index;
-  //Setar um state de get secion board erro (ver se inclui o erro no getBoard tb)
-  BoardService.getBoardSections(board.id).then((response) => {
-    if (response.status === 200) store.boards[index].sections = response.data;
-  });
 };
 </script>
 
@@ -123,7 +119,7 @@ const onBoardClick = (board, index) => {
             :title="board.title"
             rounded="xl"
             :value="board.title"
-            @click="onBoardClick(board, index)"
+            @click="setChosenBoardIndex(index)"
           >
           </v-list-item>
         </v-list-group>

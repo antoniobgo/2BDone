@@ -2,8 +2,9 @@
 import { defineProps, ref, computed, watch } from "vue";
 import { useDisplay } from "vuetify";
 import { useStore } from "@/store/index";
-import SectionItem from "./SectionItem.vue";
 import BoardService from "@/services/board.service";
+import SectionItem from "@/components/SectionItem.vue";
+import SectionTitle from "@/components/SectionTitle.vue";
 
 const { mdAndUp } = useDisplay();
 const store = useStore();
@@ -25,10 +26,6 @@ const taskFieldInputErrorMessage = computed(() => {
     : descriptionLength > 200
     ? `Descrição com ${descriptionLength}/200 caracteres.`
     : "";
-});
-
-const sectionItemsLength = computed(() => {
-  return props.section.items ? props.section.items.length : 0;
 });
 
 const onAddItemClick = () => {
@@ -94,30 +91,7 @@ watch(
 <template>
   <v-card flat>
     <v-card-title class="pb-0 pl-3">
-      <v-row no-gutters justify="space-between" align="center">
-        <div class="d-flex">
-          <p>{{ section.title }}</p>
-          <p class="ml-2 small-text grey-color">{{ sectionItemsLength }}</p>
-        </div>
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              flat
-              icon="mdi-dots-horizontal grey-color"
-            ></v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item @click="showEditMode = true">
-              <v-list-item-title>Editar seção</v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>Excluir seção</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-row>
+      <SectionTitle :section="props.section" />
     </v-card-title>
     <v-card-text
       class="pb-0 mb-0 overflow-y-auto card-text-height"

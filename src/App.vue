@@ -1,6 +1,6 @@
 <script setup>
-import CustomAppBar from "@/components/CustomAppBar";
-import CustomNavDrawer from "@/components/CustomNavDrawer";
+import CustomAppBar from "@/components/main_components/CustomAppBar";
+import CustomNavDrawer from "@/components/main_components/CustomNavDrawer";
 </script>
 <template>
   <v-app>

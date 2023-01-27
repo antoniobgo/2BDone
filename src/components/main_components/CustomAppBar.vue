@@ -23,13 +23,6 @@ const onLogoutClick = () => {
   store.$patch({ isUserLoggedIn: false, loggedUser: {} });
   router.push({ name: "login" });
 };
-
-const onBoardClick = (board, index) => {
-  store.chosenBoardIndex = index;
-  BoardService.getBoardSections(board.id).then((response) => {
-    if (response.status === 200) store.boards[index].sections = response.data;
-  });
-};
 </script>
 
 <template>
