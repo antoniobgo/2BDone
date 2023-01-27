@@ -40,6 +40,16 @@ class BoardService {
       },
     });
   }
+
+  deleteBoard(boardId) {
+    const token = localStorage.getItem("token");
+    return axios.delete(`${API_URL}/boards/${boardId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   getBoardSections(boardId) {
     const token = localStorage.getItem("token");
     return axios.get(`${API_URL}/boards/${boardId}/sections`, {

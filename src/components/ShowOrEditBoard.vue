@@ -11,6 +11,7 @@ const isTitleLengthInvalid = ref(false);
 const board = ref({});
 const onConfirmEditBoardLoading = ref(false);
 const onEditBoardResponseError = ref(false);
+const onDeleteBoardError = ref(false);
 const boardResponseError =
   "Algo inesperado ocorreu. Por favor, tente novamente.";
 
@@ -52,6 +53,22 @@ const onConfirmEditBoardClick = () => {
   onConfirmEditBoardLoading.value = false;
 };
 
+const onDeleteBoardClick = () => {
+  //eslint-disable-next-line
+  // debugger;
+  BoardService.deleteBoard(store.boards[store.chosenBoardIndex].id)
+    .then((response) => {
+      if (response.status === 204) {
+        store.boards.splice(store.chosenBoardIndex);
+        store.chosenBoardIndex = 0;
+        if (onDeleteBoardError.value) onDeleteBoardError.value = false;
+      }
+    })
+    .catch((error) => {
+      onDeleteBoardError.value = true;
+    });
+};
+
 watch(
   () => board.value.title,
   (title) => {
@@ -70,29 +87,36 @@ watch(
 </script>
 
 <template>
-  <div v-if="!showEditMode" class="d-flex mx-10 mt-7 justify-space-between">
-    <p class="text-h4 mt-5">
-      {{ board.title }}
-    </p>
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-btn
-          v-bind="props"
-          size="large"
-          flat
-          icon="mdi-dots-horizontal"
-        ></v-btn>
-      </template>
+  <div v-if="!showEditMode">
+    <div class="d-flex mx-10 mt-7 justify-space-between">
+      <p class="text-h4 mt-5">
+        {{ board.title }}
+      </p>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            size="large"
+            flat
+            icon="mdi-dots-horizontal"
+          ></v-btn>
+        </template>
 
-      <v-list>
-        <v-list-item @click="showEditMode = true">
-          <v-list-item-title>Editar projeto</v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>Excluir projeto</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+        <v-list>
+          <v-list-item @click="showEditMode = true">
+            <v-list-item-title>Editar projeto</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="onDeleteBoardClick">
+            <v-list-item-title>Excluir projeto</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
+    <div v-if="onDeleteBoardError" class="d-flex">
+      <p class="text-red mt-4 ml-10">
+        Couldnt delete requested board. Please, try again!
+      </p>
+    </div>
   </div>
   <div v-else :class="mdAndUp ? 'w-25' : 'w-100'">
     <div class="d-flex flex-column">
@@ -108,14 +132,14 @@ watch(
       </p>
     </div>
     <div class="d-flex justify-end mr-2">
-      <v-btn @click="onCancelEditBoardClick" size="x-small" class="mr-2">
+      <v-btn @click="onCancelEditBoardClick" size="small" class="mr-2">
         cancelar
       </v-btn>
       <v-btn
         @click="onConfirmEditBoardClick"
         :loading="onConfirmEditBoardLoading"
         :disabled="board.title.length === 0 || board.title.length > 70"
-        size="x-small"
+        size="small"
         color="primary"
       >
         confirmar
