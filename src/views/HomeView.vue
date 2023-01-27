@@ -2,7 +2,7 @@
 import { onBeforeMount, watch, ref, computed } from "vue";
 import router from "../router/index.js";
 import { useStore } from "@/store/index";
-import BoardSection from "@/components/BoardSection.vue";
+import BoardSection from "@/components/main_components/BoardSection.vue";
 import AddSectionButton from "@/components/AddSectionButton.vue";
 import ShowOrEditBoard from "@/components/ShowOrEditBoard.vue";
 import BoardService from "@/services/board.service";
@@ -25,38 +25,67 @@ const LogInWithToken = () => {
 
 //Analisar um jeito de juntar essas duas funções
 const getAndSaveFirstBoardData = () => {
-  BoardService.getBoards().then((response) => {
-    if (response.status === 200) {
-      store.boards = response.data;
-      if (store.boards.length > 0) {
-        board.value.title = response.data[store.chosenBoardIndex].title;
-        BoardService.getBoardSections(
-          store.boards[store.chosenBoardIndex].id
-        ).then((response) => {
-          if (response.status === 200) {
-            store.boards[store.chosenBoardIndex].sections = response.data;
-            store.boards[store.chosenBoardIndex].sections.forEach(
-              (section, index) => {
-                BoardService.getSectionItems(section.id).then((response) => {
-                  if (response.status === 200) {
-                    // Verificar se adicionar propriedade nova quebra reatividade
-                    store.boards[store.chosenBoardIndex].sections[index].items =
-                      response.data;
+  BoardService.getBoards()
+    .then((response) => {
+      if (response.status === 200) {
+        store.boards = response.data;
+        if (store.boards.length > 0) {
+          board.value.title = response.data[store.chosenBoardIndex].title;
+          BoardService.getBoardSections(store.boards[store.chosenBoardIndex].id)
+            .then((response) => {
+              if (response.status === 200) {
+                store.boards[store.chosenBoardIndex].sections = response.data;
+                store.boards[store.chosenBoardIndex].sections.forEach(
+                  (section, index) => {
+                    BoardService.getSectionItems(section.id)
+                      .then((response) => {
+                        if (response.status === 200) {
+                          // Verificar se adicionar propriedade nova quebra reatividade
+                          store.boards[store.chosenBoardIndex].sections[
+                            index
+                          ].items = response.data;
+                        }
+                      })
+                      .catch((error) => {
+                        if (error.response) {
+                          console.log(
+                            "status: " +
+                              error.response.status +
+                              ", message: " +
+                              error.message
+                          );
+                        }
+                      });
                   }
-                });
+                );
               }
-            );
-          }
-        });
+            })
+            .catch((error) => {
+              if (error.response) {
+                console.log(
+                  "status: " +
+                    error.response.status +
+                    ", message: " +
+                    error.message
+                );
+              }
+            });
+        }
       }
-    }
-  });
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(
+          "status: " + error.response.status + ", message: " + error.message
+        );
+      }
+    });
 };
 
 const getNewSelectedBoardData = () => {
   board.value.title = store.boards[store.chosenBoardIndex].title;
-  BoardService.getBoardSections(store.boards[store.chosenBoardIndex].id).then(
-    (response) => {
+  BoardService.getBoardSections(store.boards[store.chosenBoardIndex].id)
+    .then((response) => {
       if (response.status === 200) {
         store.boards[store.chosenBoardIndex].sections = response.data;
         store.boards[store.chosenBoardIndex].sections.forEach(
@@ -71,8 +100,8 @@ const getNewSelectedBoardData = () => {
           }
         );
       }
-    }
-  );
+    })
+    .catch();
 };
 
 onBeforeMount(() => {
@@ -94,7 +123,7 @@ watch(
 </script>
 <template>
   <div v-if="store.boards.length" class="overflow-x-auto h-100">
-    <ShowOrEditBoard :board="board"></ShowOrEditBoard>
+    <ShowOrEditBoard />
     <v-row dense no-gutters class="ml-3 mt-5 flex-nowrap">
       <v-col
         cols="8"
@@ -111,14 +140,8 @@ watch(
     </v-row>
   </div>
   <div v-else>
-    <h3>Sem projetos criados, crie um!</h3>
+    <h3>Você ainda não tem projetos criados.</h3>
   </div>
 </template>
 
-<style>
-.scroll-test {
-  background-color: yellow;
-  overflow: auto !important;
-  /* white-space: nowrap !important; */
-}
-</style>
+<style></style>

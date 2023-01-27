@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, inject, onBeforeMount } from "vue";
 import { useStore } from "@/store/index";
-import BoardSection from "@/components/BoardSection.vue";
 import router from "@/router/index.js";
 import AuthService from "../services/auth.service";
 import BoardService from "../services/board.service";
