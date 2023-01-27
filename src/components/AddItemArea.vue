@@ -88,8 +88,8 @@ watch(
 <template>
   <div v-if="showAddItemField" class="w-100">
     <v-row justify="center" no-gutters>
-      <v-col cols="11">
-        <v-sheet style="border: 1px solid #e0e0e0" class="mx-3 rounded-lg">
+      <v-col cols="12">
+        <v-sheet style="border: 1px solid #e0e0e0" class="mx-4 rounded-lg">
           <v-text-field
             v-model="taskItem.title"
             class="pl-3"
