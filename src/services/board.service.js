@@ -82,6 +82,21 @@ class BoardService {
     );
   }
 
+  editSection(section) {
+    const token = localStorage.getItem("token");
+    return axios.patch(
+      `${API_URL}/sections/${section.id}`,
+      {
+        title: section.title,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
   addItem(item, sectionId) {
     const token = localStorage.getItem("token");
     return axios.post(
