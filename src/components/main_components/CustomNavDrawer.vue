@@ -19,7 +19,7 @@ const onConfirmAddBoardClick = () => {
     .then((response) => {
       if (response.status === 201) {
         if (addBoardError.value) addBoardError.value = false;
-        store.addBoard(newBoard.value);
+        store.addBoard(response.data.board);
         newBoard.value = {};
         showAddBoardField.value = false;
       }
