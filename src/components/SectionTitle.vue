@@ -10,6 +10,7 @@ const newSectionTitle = ref(props.section.title);
 const isOnSectionEditState = ref(false);
 const onConfirmEditSectionLoading = ref(false);
 const onEditSectionResponseError = ref(false);
+const onDeleteSectionResponseError = ref(false);
 
 const isTitleLengthInvalid = computed(() => {
   return (
@@ -58,6 +59,23 @@ const onCancelEditSectionClick = () => {
   newSectionTitle.value = props.section.title;
   isOnSectionEditState.value = false;
 };
+
+const onDeleteSectionClick = () => {
+  BoardService.deleteSection(props.section.id)
+    .then((response) => {
+      if (response.status === 204) {
+        if (onDeleteSectionResponseError.value)
+          onDeleteSectionResponseError.value = false;
+        let sectionIndex = store.boards[
+          store.chosenBoardIndex
+        ].sections.indexOf(props.section);
+        store.boards[store.chosenBoardIndex].sections.splice(sectionIndex, 1);
+      }
+    })
+    .catch(() => {
+      onDeleteSectionResponseError.value = true;
+    });
+};
 </script>
 
 <template>
@@ -67,28 +85,36 @@ const onCancelEditSectionClick = () => {
     justify="space-between"
     align="center"
   >
-    <div class="d-flex">
-      <p>{{ props.section.title }}</p>
-      <p class="ml-2 small-text grey-color">{{ sectionItemsLength }}</p>
-    </div>
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-btn
-          v-bind="props"
-          flat
-          icon="mdi-dots-horizontal grey-color"
-        ></v-btn>
-      </template>
+    <v-col>
+      <div class="d-flex">
+        <p>{{ props.section.title }}</p>
+        <p class="ml-2 small-text grey-color">{{ sectionItemsLength }}</p>
+      </div>
+    </v-col>
+    <v-col cols="2">
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            flat
+            icon="mdi-dots-horizontal grey-color"
+          ></v-btn>
+        </template>
 
-      <v-list>
-        <v-list-item @click="isOnSectionEditState = !isOnSectionEditState">
-          <v-list-item-title>Editar seção</v-list-item-title>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>Excluir seção</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+        <v-list>
+          <v-list-item @click="isOnSectionEditState = !isOnSectionEditState">
+            <v-list-item-title>Editar seção</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="onDeleteSectionClick">
+            <v-list-item-title>Excluir seção</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-col>
+    <v-col v-if="onDeleteSectionResponseError" cols="12">
+      <p class="text-red input-error ml-1">An unexpected error occured.</p>
+      <p class="text-red input-error ml-1 mb-1">Please, try again.</p>
+    </v-col>
   </v-row>
   <v-row v-else no-gutters justify="start">
     <v-col cols="12">
@@ -108,7 +134,7 @@ const onCancelEditSectionClick = () => {
         </p>
         <div v-if="onEditSectionResponseError">
           <p class="text-red input-error ml-1">An unexpected error occured.</p>
-          <p class="text-red input-error ml-1">Please, try again.</p>
+          <p class="text-red input-error ml-1 mb-1">Please, try again.</p>
         </div>
       </div>
     </v-col>
@@ -133,5 +159,6 @@ const onCancelEditSectionClick = () => {
 <style scoped>
 .input-error {
   font-size: 12px;
+  line-height: 14px;
 }
 </style>

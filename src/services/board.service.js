@@ -97,6 +97,15 @@ class BoardService {
     );
   }
 
+  deleteSection(sectionId) {
+    const token = localStorage.getItem("token");
+    return axios.delete(`${API_URL}/sections/${sectionId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   addItem(item, sectionId) {
     const token = localStorage.getItem("token");
     return axios.post(

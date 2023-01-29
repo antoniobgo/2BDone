@@ -59,7 +59,7 @@ const onDeleteBoardClick = () => {
   BoardService.deleteBoard(store.boards[store.chosenBoardIndex].id)
     .then((response) => {
       if (response.status === 204) {
-        store.boards.splice(store.chosenBoardIndex);
+        store.boards.splice(store.chosenBoardIndex, 1);
         store.chosenBoardIndex = 0;
         if (onDeleteBoardError.value) onDeleteBoardError.value = false;
       }
