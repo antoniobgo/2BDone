@@ -15,6 +15,7 @@ const addItemError = ref(false);
 const taskFieldInputError = ref(false);
 const isAddItemButtonLoading = ref(false);
 </script>
+
 <template>
   <v-card flat>
     <v-card-title class="pb-0 pl-3">
@@ -29,8 +30,8 @@ const isAddItemButtonLoading = ref(false);
           v-for="item in props.section.items"
           :key="item.id"
           :item="item"
-          :sectionId="props.section.id"
-          class="mb-2"
+          :section="props.section"
+          class="my-4"
         />
       </div>
     </v-card-text>

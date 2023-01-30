@@ -121,6 +121,31 @@ class BoardService {
       }
     );
   }
+
+  editItem(item) {
+    const token = localStorage.getItem("token");
+    return axios.patch(
+      `${API_URL}/items/${item.id}`,
+      {
+        title: item.title,
+        description: item.description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
+  deleteItem(itemId) {
+    const token = localStorage.getItem("token");
+    return axios.delete(`${API_URL}items/${itemId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
 }
 
 export default new BoardService();

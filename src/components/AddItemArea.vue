@@ -102,7 +102,7 @@ watch(
             v-model="taskItem.description"
             class="pl-3"
             variant="plain"
-            placeholder="descrição"
+            placeholder="Descrição"
             hide-details="auto"
             density="compact"
           ></v-text-field>
@@ -153,7 +153,7 @@ watch(
 input[placeholder="Título da tarefa"] {
   padding-top: 2px;
 }
-input[placeholder="descrição"] {
+input[placeholder="Descrição"] {
   padding-top: 2px;
 }
 </style>

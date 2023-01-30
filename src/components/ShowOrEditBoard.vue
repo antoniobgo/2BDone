@@ -54,8 +54,6 @@ const onConfirmEditBoardClick = () => {
 };
 
 const onDeleteBoardClick = () => {
-  //eslint-disable-next-line
-  // debugger;
   BoardService.deleteBoard(store.boards[store.chosenBoardIndex].id)
     .then((response) => {
       if (response.status === 204) {
