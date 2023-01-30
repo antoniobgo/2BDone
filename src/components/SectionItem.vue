@@ -69,33 +69,33 @@ const onCancelEditItemClick = () => {
             >
             </v-radio>
           </v-col>
-          <v-col cols="8">
+          <v-col cols="7">
             <p class="text-subtitle-1 pt-2">
               {{ task.title }}
             </p>
           </v-col>
-          <v-col cols="2">
-            <v-menu location="start">
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-show="isMouseOverItem"
-                  class="mr-2"
-                  v-bind="props"
-                  flat
-                  size="small"
-                  icon="mdi-dots-horizontal"
-                ></v-btn>
-              </template>
-
-              <v-list>
-                <v-list-item @click="onEditTaskClick">
-                  <v-list-item-title>Editar tarefa</v-list-item-title>
-                </v-list-item>
-                <v-list-item @click="onDeleteTaskClick">
-                  <v-list-item-title>Excluir tarefa</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
+          <v-col cols="3" align-self="center">
+            <div v-if="isMouseOverItem" class="d-flex justify-end mr-1">
+              <v-btn
+                @click="onEditTaskClick"
+                icon
+                variant="flat"
+                density="compact"
+                size="small"
+                class="mr-1"
+              >
+                <v-icon color="#7C7E81"> mdi-pencil </v-icon>
+              </v-btn>
+              <v-btn
+                @click="onDeleteTaskClick"
+                variant="flat"
+                density="compact"
+                size="small"
+                icon
+              >
+                <v-icon color="#7C7E81"> mdi-trash-can-outline </v-icon>
+              </v-btn>
+            </div>
           </v-col>
         </v-row>
         <v-row no-gutters dense>

@@ -20,7 +20,12 @@ const onNavIconClick = () => {
 
 const onLogoutClick = () => {
   AuthService.logout();
-  store.$patch({ isUserLoggedIn: false, loggedUser: {} });
+  store.$patch({
+    isUserLoggedIn: false,
+    loggedUser: {},
+    boards: [],
+    chosenBoardIndex: 0,
+  });
   router.push({ name: "login" });
 };
 </script>
