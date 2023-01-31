@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASE_URL = "https://todolist-api-production-ec65.up.railway.app";
+// const BASE_URL = "https://todolist-api-production-ec65.up.railway.app";
+const BASE_URL = "http://localhost:3000";
 
 class BoardService {
   createBoard(board) {

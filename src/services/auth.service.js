@@ -1,8 +1,8 @@
 import axios from "axios";
 // import { useStore } from "@/store/index";
 
-// const BASE_URL = "http://localhost:3000/";
-const BASE_URL = "https://todolist-api-production-ec65.up.railway.app";
+const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "https://todolist-api-production-ec65.up.railway.app";
 // const store = useStore();
 
 class AuthService {
