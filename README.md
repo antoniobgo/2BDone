@@ -25,5 +25,5 @@ Criada utilizando Vue.js 3, Vuetify 3, Vue Router e Pinia, alimentada pelo back-
 
 ```
 1- Autenticação: criação de contas utilizando email (ainda sem verificação), login e logout (estes utilizando autenticação JWT).
-3- Criação, edição e exclusão dos projetos, seções e tarefas.
+2- Criação, edição e exclusão dos projetos, seções e tarefas.
 ```
