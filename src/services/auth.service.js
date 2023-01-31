@@ -1,13 +1,14 @@
 import axios from "axios";
 // import { useStore } from "@/store/index";
 
-const API_URL = "http://localhost:3000/";
+// const BASE_URL = "http://localhost:3000/";
+const BASE_URL = "https://todolist-api-production-ec65.up.railway.app";
 // const store = useStore();
 
 class AuthService {
   login(user) {
     return axios
-      .post(API_URL + "/auth/login", {
+      .post(BASE_URL + "/auth/login", {
         email: user.email,
         password: user.password,
       })
@@ -26,7 +27,7 @@ class AuthService {
   loginWithToken() {
     const token = localStorage.getItem("token");
     return axios
-      .get(API_URL + "me", {
+      .get(BASE_URL + "/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -44,7 +45,7 @@ class AuthService {
   }
 
   register(user) {
-    return axios.post(API_URL + "/users", {
+    return axios.post(BASE_URL + "/users", {
       email: user.email,
       password: user.password,
       password_confirmation: user.passwordConfirmation,

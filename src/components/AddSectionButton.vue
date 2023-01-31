@@ -24,13 +24,16 @@ const onConfirmAddSectionClick = () => {
   )
     .then((response) => {
       if (response.status === 201) {
+        //creating sections property if doesnt exists
+        if (!store.boards[store.chosenBoardIndex].sections)
+          store.boards[store.chosenBoardIndex].sections = [];
         store.boards[store.chosenBoardIndex].sections.push(response.data);
         if (addSectionError.value) addSectionError.value = false;
         onAddSectionState.value = false;
         sectionTitle.value = "";
       }
     })
-    .catch(() => {
+    .catch((response) => {
       addSectionError.value = true;
     });
   isAddSectionLoading.value = false;

@@ -1,11 +1,11 @@
 import axios from "axios";
-const API_URL = "http://localhost:3000/";
+const BASE_URL = "https://todolist-api-production-ec65.up.railway.app";
 
 class BoardService {
   createBoard(board) {
     const token = localStorage.getItem("token");
     return axios.post(
-      API_URL + "boards",
+      BASE_URL + "/boards",
       {
         title: board.title,
       },
@@ -20,7 +20,7 @@ class BoardService {
   editBoard(newBoard) {
     const token = localStorage.getItem("token");
     return axios.patch(
-      `${API_URL}/boards/${newBoard.id}`,
+      `${BASE_URL}/boards/${newBoard.id}`,
       {
         title: newBoard.title,
       },
@@ -34,7 +34,7 @@ class BoardService {
 
   getBoards() {
     const token = localStorage.getItem("token");
-    return axios.get(API_URL + "me/boards", {
+    return axios.get(BASE_URL + "/me/boards", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -43,7 +43,7 @@ class BoardService {
 
   deleteBoard(boardId) {
     const token = localStorage.getItem("token");
-    return axios.delete(`${API_URL}/boards/${boardId}`, {
+    return axios.delete(`${BASE_URL}/boards/${boardId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -52,7 +52,7 @@ class BoardService {
 
   getBoardSections(boardId) {
     const token = localStorage.getItem("token");
-    return axios.get(`${API_URL}/boards/${boardId}/sections`, {
+    return axios.get(`${BASE_URL}/boards/${boardId}/sections`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -60,7 +60,7 @@ class BoardService {
   }
   getSectionItems(sectionId) {
     const token = localStorage.getItem("token");
-    return axios.get(`${API_URL}/sections/${sectionId}/items`, {
+    return axios.get(`${BASE_URL}/sections/${sectionId}/items`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -70,7 +70,7 @@ class BoardService {
   addSection(boardId, title) {
     const token = localStorage.getItem("token");
     return axios.post(
-      `${API_URL}/boards/${boardId}/sections`,
+      `${BASE_URL}/boards/${boardId}/sections`,
       {
         title,
       },
@@ -85,7 +85,7 @@ class BoardService {
   editSection(section) {
     const token = localStorage.getItem("token");
     return axios.patch(
-      `${API_URL}/sections/${section.id}`,
+      `${BASE_URL}/sections/${section.id}`,
       {
         title: section.title,
       },
@@ -99,7 +99,7 @@ class BoardService {
 
   deleteSection(sectionId) {
     const token = localStorage.getItem("token");
-    return axios.delete(`${API_URL}/sections/${sectionId}`, {
+    return axios.delete(`${BASE_URL}/sections/${sectionId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -109,7 +109,7 @@ class BoardService {
   addItem(item, sectionId) {
     const token = localStorage.getItem("token");
     return axios.post(
-      `${API_URL}/sections/${sectionId}/items`,
+      `${BASE_URL}/sections/${sectionId}/items`,
       {
         title: item.title,
         description: item.description,
@@ -125,7 +125,7 @@ class BoardService {
   editItem(item) {
     const token = localStorage.getItem("token");
     return axios.patch(
-      `${API_URL}/items/${item.id}`,
+      `${BASE_URL}/items/${item.id}`,
       {
         title: item.title,
         description: item.description,
@@ -140,7 +140,7 @@ class BoardService {
 
   deleteItem(itemId) {
     const token = localStorage.getItem("token");
-    return axios.delete(`${API_URL}items/${itemId}`, {
+    return axios.delete(`${BASE_URL}/items/${itemId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

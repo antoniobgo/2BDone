@@ -139,7 +139,7 @@ watch(
       </v-col>
     </v-row>
   </div>
-  <div v-else>
+  <div v-else class="mt-15 ml-15">
     <h3>Você ainda não tem projetos criados.</h3>
   </div>
 </template>
