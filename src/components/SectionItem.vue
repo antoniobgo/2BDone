@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps, ref, watch } from "vue";
 import { useStore } from "@/store/index";
 import BoardService from "@/services/board.service";
 
@@ -14,7 +14,7 @@ const task = ref({
 });
 
 // Olha que beleza
-const onDeleteTaskClick = () => {
+const onDeleteTaskClick = (completed = false) => {
   BoardService.deleteItem(props.item.id).then((response) => {
     store.deleteTaskItem(props.section.id, props.item.title);
   });
@@ -49,6 +49,11 @@ const onCancelEditItemClick = () => {
   task.value.description = props.item.description;
   onEditMode.value = false;
 };
+
+const teste = () => {
+  //eslint-disable-next-line
+  debugger;
+};
 </script>
 
 <template>
@@ -63,8 +68,8 @@ const onCancelEditItemClick = () => {
         <v-row no-gutters dense>
           <v-col cols="2">
             <v-radio
-              @click="toggle = !toggle"
               v-model="toggle"
+              @click="onDeleteTaskClick"
               class="grey-color"
             >
             </v-radio>
