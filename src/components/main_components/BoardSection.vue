@@ -35,6 +35,19 @@ const isAddItemButtonLoading = ref(false);
         />
       </div>
     </v-card-text>
+    <v-snackbar v-model="store.activateSnackbar">
+      <div class="text-subtitle-1 d.flex align-center">One task completed.</div>
+      <template v-slot:actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="store.activateSnackbar = false"
+          icon
+        >
+          <v-icon> mdi-close </v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-card-actions class="ma-0 pa-0">
       <AddItemArea :section="props.section" />
     </v-card-actions>

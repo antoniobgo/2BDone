@@ -15,6 +15,7 @@ const task = ref({
 
 // Olha que beleza
 const onDeleteTaskClick = (completed = false) => {
+  store.activateSnackbar = true;
   BoardService.deleteItem(props.item.id).then((response) => {
     store.deleteTaskItem(props.section.id, props.item.title);
   });
