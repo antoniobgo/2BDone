@@ -36,7 +36,7 @@ const isAddItemButtonLoading = ref(false);
       </div>
     </v-card-text>
     <v-snackbar v-model="store.activateSnackbar">
-      <div class="text-subtitle-1 d.flex align-center">One task completed.</div>
+      <div class="text-subtitle-1 d.flex align-center">1 task completed.</div>
       <template v-slot:actions>
         <v-btn
           color="pink"

@@ -14,8 +14,10 @@ const task = ref({
 });
 
 // Olha que beleza
-const onDeleteTaskClick = (completed = false) => {
-  store.activateSnackbar = true;
+const onDeleteTaskClick = (isTaskCompleted = false) => {
+  if (isTaskCompleted === true) store.activateSnackbar = true;
+  //eslint-disable-next-line
+  debugger;
   BoardService.deleteItem(props.item.id).then((response) => {
     store.deleteTaskItem(props.section.id, props.item.title);
   });
@@ -70,7 +72,7 @@ const teste = () => {
           <v-col cols="2">
             <v-radio
               v-model="toggle"
-              @click="onDeleteTaskClick"
+              @click="onDeleteTaskClick(true)"
               class="grey-color"
             >
             </v-radio>
